@@ -24,7 +24,7 @@ t_EQUALS = r'='
 reserved = {
  'define'       :   'DEFINE',
  'domain'       :   'DOMAIN',
- r'\:extends'     :   'EXTENDS',
+ ':extends'     :   'EXTENDS',
  ':requirements':   'REQS',
  ':strips'      :   'REQ_STRIPS',
  ':typing'      :   'REQ_TYPING',
@@ -44,25 +44,21 @@ reserved = {
  'not'          :   'NOT'
 }
 
-tokens +=  tuple([reserved[key] for key in reserved])
+tokens += tuple(reserved.values())
 
 def t_KEYWORD(t):
     r':?[a-zA-z_][a-zA-Z_0-9\-]*'
-    t.type = reserved.get(t.value, 'NAME')
-    return t
-def t_NUMBER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-def t_NAME(t):
-    r'[a-zA-Z_][a-zA-Z_0-9\-]*'
-    t.value = str(t.value)
+    t.type = reserved.get(t.value, "NAME")
     return t
 
 def t_VARIABLE(t):
     r'\?[a-zA-Z_][a-zA-Z_0-9\-]*'
     t.value = str(t.value)
+    return t
+
+def t_NUMBER(t):
+    r'\d+'
+    t.value = int(t.value)
     return t
 
 def t_COMMENT(t):
