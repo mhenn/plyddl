@@ -9,6 +9,7 @@ from pddl.action import *
 
 print(tokens)
 
+
 def p_pddl(p):
     """pddl : LPAREN DEFINE domain RPAREN
             | LPAREN DEFINE problem RPAREN"""
@@ -41,11 +42,38 @@ def p_type_list(p):
 
 
 def p_predicates_def(p):
-    """"""
+    """predicates_def : LPAREN PREDICATES predicate_list RPAREN"""
+
+
+def p_predicate_list(p):
+    """predicate_list : LPAREN predicate RPAREN
+                      | LPAREN predicate RPAREN predicate_list"""
+
+
+def p_predicate(p):
+    """predicate : NAME var_list"""
+
+
+def p_var_list(p):
+    """var_list : VARIABLE - NAME
+                | VARIABLE var_list
+                | VARIABLE - NAME var_list"""
 
 
 def p_action_def(p):
-    pass
+    """action_def : LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN"""
+
+
+def p_parameter_def(p):
+    """parameter_def : ACT_PARAM LPAREN var_list RPAREN"""
+
+
+def p_precondition_def(p):
+    """"""
+
+
+def effect_def(p):
+    """"""
 
 
 def p_problem(p):
