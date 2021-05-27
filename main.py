@@ -68,4 +68,5 @@ pb = '''(define
 '''
 
 
-print(parser.parse(pb))
+domain = parser.parse(data)
+print('aye')

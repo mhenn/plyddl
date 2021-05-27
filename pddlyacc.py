@@ -3,7 +3,7 @@ from ply import yacc
 from pddllex import tokens
 from pddl.domain import Domain
 from pddl.requirements import Requirements
-from pddl.types import Types
+from pddl.types import Type, Variables
 from pddl.predicate import Predicate
 from pddl.action import *
 
@@ -33,27 +33,51 @@ def p_requirements_def(p):
 
 def p_types_def(p):
     """types_def : LPAREN  TYPES type_list  RPAREN"""
+    p[0] = p[3]
 
 
 def p_type_list(p):
     """type_list : NAME MINUS NAME
                  | NAME type_list
                  | NAME MINUS NAME type_list"""
+    if len(p) == 4:
+        p[0] = [Type([p[1]],p[3])]
+    elif len(p) == 3:
+        t = p[2]
+        t[-1].add(p[1])
+        p[0] = t
+    elif len(p) == 5:
+        t = p[4]
+        t.append(Type([p[1]], p[3]))
+        p[0] = t
 
 
 def p_predicates_def(p):
     """predicates_def : LPAREN PREDICATES predicate_list RPAREN"""
-
+    p[0] = p[3]
 
 def p_predicate_list(p):
     """predicate_list : predicate
                       | predicate  predicate_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        preds = p[2]
+        preds.append(p[1])
+        p[0] = preds
 
 
 def p_predicate(p):
     """predicate : LPAREN NAME param_list RPAREN
                  | LPAREN NOT predicate RPAREN"""
 
+    pred = None
+    if p[2] == '-':
+        pred = p[3]
+        p[3].negation = True
+    else:
+        pred = Predicate(p[2], p[3])
+    p[0] = pred
 
 def p_mixed_predicate_list(p):
     """mixed_predicate_list : mixed_predicate
@@ -69,6 +93,16 @@ def p_param_list(p):
     """param_list : VARIABLE MINUS NAME
                 | VARIABLE param_list
                 | VARIABLE MINUS NAME param_list"""
+    if len(p) == 4:
+        p[0] = [Variables([p[1]], p[3])]
+    elif len(p) == 3:
+        t = p[2]
+        t[-1].add(p[1])
+        p[0] = t
+    elif len(p) == 5:
+        t = p[4]
+        t.append(Variables([p[1]], p[3]))
+        p[0] = t
 
 
 def p_action_def(p):
@@ -77,6 +111,7 @@ def p_action_def(p):
 
 def p_parameter_def(p):
     """parameter_def : ACT_PARAM LPAREN param_list RPAREN"""
+    p[0] = p[3]
 
 
 def p_precondition_def(p):

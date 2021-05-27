@@ -6,12 +6,6 @@ class Action:
         self.effects = effects
 
 
-class Parameter:
-
-    def __init__(self, vars):
-        self.vars = vars
-
-
 class Precondition:
 
     def __init__(self, predicate, vars, negation=False):
