@@ -32,13 +32,13 @@ def p_requirements_def(p):
 
 
 def p_types_def(p):
-    """types_def : LPAREN  TYPES type_loop  RPAREN"""
+    """types_def : LPAREN  TYPES type_list  RPAREN"""
 
 
 def p_type_list(p):
-    """type_loop : NAME - NAME
+    """type_list : NAME MINUS NAME
                  | NAME type_list
-                 | NAME - NAME type_list"""
+                 | NAME MINUS NAME type_list"""
 
 
 def p_predicates_def(p):
@@ -46,18 +46,29 @@ def p_predicates_def(p):
 
 
 def p_predicate_list(p):
-    """predicate_list : LPAREN predicate RPAREN
-                      | LPAREN predicate RPAREN predicate_list"""
+    """predicate_list : predicate
+                      | predicate  predicate_list"""
 
 
 def p_predicate(p):
-    """predicate : NAME var_list"""
+    """predicate : LPAREN NAME param_list RPAREN
+                 | LPAREN NOT predicate RPAREN"""
 
 
-def p_var_list(p):
-    """var_list : VARIABLE - NAME
-                | VARIABLE var_list
-                | VARIABLE - NAME var_list"""
+def p_act_predicate_list(p):
+    """act_predicate_list : act_predicate
+                      | act_predicate  act_predicate_list"""
+
+
+def p_act_predicate(p):
+    """act_predicate : LPAREN NAME var_list RPAREN
+                 | LPAREN NOT act_predicate RPAREN"""
+
+
+def p_param_list(p):
+    """param_list : VARIABLE MINUS NAME
+                | VARIABLE param_list
+                | VARIABLE MINUS NAME param_list"""
 
 
 def p_action_def(p):
@@ -65,15 +76,23 @@ def p_action_def(p):
 
 
 def p_parameter_def(p):
-    """parameter_def : ACT_PARAM LPAREN var_list RPAREN"""
+    """parameter_def : ACT_PARAM LPAREN param_list RPAREN"""
+
+
+def p_var_list(p):
+    """var_list : VARIABLE
+                | VARIABLE var_list"""
 
 
 def p_precondition_def(p):
-    """"""
+    """precondition_def :  ACT_PRE predicate
+                        |  ACT_PRE LPAREN AND act_predicate_list RPAREN"""
+    print(p[1])
 
 
-def effect_def(p):
-    """"""
+def p_effect_def(p):
+    """effect_def : ACT_EFF predicate
+                  | ACT_EFF LPAREN AND act_predicate_list RPAREN"""
 
 
 def p_problem(p):
@@ -81,6 +100,6 @@ def p_problem(p):
 
 
 def p_error(p):
-    print("Syntax error in input!!")
+    print(f'Syntax error in input {p}')
 
 parser = yacc.yacc()
