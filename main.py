@@ -69,4 +69,3 @@ pb = '''(define
 
 
 domain = parser.parse(data)
-print('aye')

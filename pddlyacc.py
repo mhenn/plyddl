@@ -18,7 +18,7 @@ def p_pddl(p):
 
 def p_domain(p):
     """domain :  domain_def requirements_def types_def predicates_def action_def"""
-    p[0] = Domain(p[1], p[2], p[4], p[5])
+    p[0] = Domain(p[1], p[2],p[3], p[4], p[5])
 
 
 def p_domain_def(p):
@@ -48,13 +48,14 @@ def p_type_list(p):
         p[0] = t
     elif len(p) == 5:
         t = p[4]
-        t.append(Type([p[1]], p[3]))
+        t.insert(0,Type([p[1]], p[3]))
         p[0] = t
 
 
 def p_predicates_def(p):
     """predicates_def : LPAREN PREDICATES predicate_list RPAREN"""
     p[0] = p[3]
+
 
 def p_predicate_list(p):
     """predicate_list : predicate
@@ -63,7 +64,7 @@ def p_predicate_list(p):
         p[0] = [p[1]]
     else:
         preds = p[2]
-        preds.append(p[1])
+        preds.insert(0,p[1])
         p[0] = preds
 
 
@@ -71,7 +72,6 @@ def p_predicate(p):
     """predicate : LPAREN NAME param_list RPAREN
                  | LPAREN NOT predicate RPAREN"""
 
-    pred = None
     if p[2] == '-':
         pred = p[3]
         p[3].negation = True
@@ -79,14 +79,27 @@ def p_predicate(p):
         pred = Predicate(p[2], p[3])
     p[0] = pred
 
+
 def p_mixed_predicate_list(p):
     """mixed_predicate_list : mixed_predicate
                       | mixed_predicate  mixed_predicate_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        m_p =  p[2]
+        m_p.insert(0,p[1])
+        p[0] = m_p
 
 
 def p_mixed_predicate(p):
     """mixed_predicate : LPAREN NAME mixed_list RPAREN
                  | LPAREN NOT mixed_predicate RPAREN"""
+    if not p[2] == 'not':
+        p[0] = Predicate(p[2],p[3]['var'], p[3]['const'])
+    else:
+        pred = p[3]
+        pred.negation = True
+        p[0] = pred
 
 
 def p_param_list(p):
@@ -101,12 +114,13 @@ def p_param_list(p):
         p[0] = t
     elif len(p) == 5:
         t = p[4]
-        t.append(Variables([p[1]], p[3]))
+        t.insert(0,Variables([p[1]], p[3]))
         p[0] = t
 
 
 def p_action_def(p):
     """action_def : LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN"""
+    p[0] = Action(p[3], p[4], p[5], p[6])
 
 
 def p_parameter_def(p):
@@ -117,11 +131,19 @@ def p_parameter_def(p):
 def p_precondition_def(p):
     """precondition_def :  ACT_PRE mixed_predicate
                         |  ACT_PRE LPAREN AND mixed_predicate_list RPAREN"""
+    if len(p) == 3:
+        p[0] = [p[2]]
+    else:
+        p[0] = p[4]
 
 
 def p_effect_def(p):
-    """effect_def : ACT_EFF predicate
+    """effect_def : ACT_EFF mixed_predicate
                   | ACT_EFF LPAREN AND mixed_predicate_list RPAREN"""
+    if len(p) == 2:
+        p[0] = [p[2]]
+    else:
+        p[0] = p[4]
 
 
 ###############
@@ -160,6 +182,12 @@ def p_goal_def(p):
 def p_constant_list(p):
     """constant_list : NAME
                      | NAME constant_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        consts = p[2]
+        consts.insert(0,p[1])
+        p[0] = consts
 
 
 def p_mixed_list(p):
@@ -167,11 +195,27 @@ def p_mixed_list(p):
                   | NAME
                   | VARIABLE mixed_list
                   | NAME mixed_list"""
+    m_l = []
+    if len(p) == 2:
+        m_l = {'var': [], 'const': []}
+    else:
+        m_l = p[2]
+    if p[1][0] == '?':
+        m_l['var'].insert(0, p[1])
+    else:
+        m_l['const'].insert(0, p[1])
+    p[0] = m_l
 
 
 def p_var_list(p):
     """var_list : VARIABLE
                 | VARIABLE var_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        vars = p[2]
+        vars.insert(0, p[1])
+        p[0] = vars
 
 
 def p_error(p):

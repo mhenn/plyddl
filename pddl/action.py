@@ -1,6 +1,7 @@
 class Action:
 
-    def __init__(self, parameter, precondition, effects):
+    def __init__(self,name, parameter, precondition, effects):
+        self.name = name
         self.parameter = parameter
         self.precondition = precondition
         self.effects = effects
