@@ -55,14 +55,14 @@ def p_predicate(p):
                  | LPAREN NOT predicate RPAREN"""
 
 
-def p_act_predicate_list(p):
-    """act_predicate_list : act_predicate
-                      | act_predicate  act_predicate_list"""
+def p_mixed_predicate_list(p):
+    """mixed_predicate_list : mixed_predicate
+                      | mixed_predicate  mixed_predicate_list"""
 
 
-def p_act_predicate(p):
-    """act_predicate : LPAREN NAME var_list RPAREN
-                 | LPAREN NOT act_predicate RPAREN"""
+def p_mixed_predicate(p):
+    """mixed_predicate : LPAREN NAME mixed_list RPAREN
+                 | LPAREN NOT mixed_predicate RPAREN"""
 
 
 def p_param_list(p):
@@ -79,27 +79,68 @@ def p_parameter_def(p):
     """parameter_def : ACT_PARAM LPAREN param_list RPAREN"""
 
 
+def p_precondition_def(p):
+    """precondition_def :  ACT_PRE mixed_predicate
+                        |  ACT_PRE LPAREN AND mixed_predicate_list RPAREN"""
+
+
+def p_effect_def(p):
+    """effect_def : ACT_EFF predicate
+                  | ACT_EFF LPAREN AND mixed_predicate_list RPAREN"""
+
+
+###############
+####PROBLEM####
+###############
+
+
+def p_problem(p):
+    """problem : problem_def pb_domain_def objects_def init_def goal_def"""
+
+
+def p_problem_def(p):
+    """problem_def : LPAREN PROBLEM NAME RPAREN"""
+
+
+def p_pb_domain_def(p):
+    """pb_domain_def : LPAREN PB_DOMAIN NAME RPAREN"""
+
+
+def p_objects_def(p):
+    """objects_def : LPAREN OBJECTS type_list RPAREN """
+
+
+def p_init_def(p):
+    """init_def : LPAREN INIT mixed_predicate_list RPAREN"""
+
+
+def p_goal_def(p):
+    """goal_def :  LPAREN GOAL mixed_predicate RPAREN
+                |  LPAREN GOAL LPAREN AND mixed_predicate_list RPAREN RPAREN"""
+
+
+###############
+#####UTILS#####
+###############
+def p_constant_list(p):
+    """constant_list : NAME
+                     | NAME constant_list"""
+
+
+def p_mixed_list(p):
+    """mixed_list : VARIABLE
+                  | NAME
+                  | VARIABLE mixed_list
+                  | NAME mixed_list"""
+
+
 def p_var_list(p):
     """var_list : VARIABLE
                 | VARIABLE var_list"""
 
 
-def p_precondition_def(p):
-    """precondition_def :  ACT_PRE predicate
-                        |  ACT_PRE LPAREN AND act_predicate_list RPAREN"""
-    print(p[1])
-
-
-def p_effect_def(p):
-    """effect_def : ACT_EFF predicate
-                  | ACT_EFF LPAREN AND act_predicate_list RPAREN"""
-
-
-def p_problem(p):
-    """problem : """
-
-
 def p_error(p):
     print(f'Syntax error in input {p}')
+
 
 parser = yacc.yacc()

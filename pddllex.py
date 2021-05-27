@@ -40,6 +40,11 @@ reserved = {
  ':vars'        :   'AXIOM_VARS',
  ':context'     :   'AXIOM_CONTEXT',
  ':implies'     :   'AXIOM_IMPLIES',
+ 'problem'      :   'PROBLEM',
+ ':domain'      :   'PB_DOMAIN',
+ ':objects'     :   'OBJECTS',
+ ':init'        :   'INIT',
+ ':goal'        :   'GOAL',
  'and'          :   'AND',
  'not'          :   'NOT'
 }
