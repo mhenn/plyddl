@@ -1,4 +1,3 @@
-from pddllex import lexer
 from pddlyacc import parser
 
 data = ''' 
@@ -25,6 +24,21 @@ data = '''
                 (foundations-set ?s)
                 (not (walls-built ?s))
                 (not (material-used ?b))
+                (or
+                    (walls-built ?s)
+                    (windows-fitted ?s)
+                )
+                (when
+                    (and (has-hot-chocolate ?p ?c) (has-marshmallows ?c))
+                    (and (person-is-happy ?p))
+                )
+                (forall (?c - crane)
+                    (crane-is-free ?c)
+                )
+                (exists (?c - crane)
+                    (crane-is-free ?c)
+                )
+
             )
             :effect (and
                 (walls-built ?s)
@@ -69,3 +83,4 @@ pb = '''(define
 
 
 domain = parser.parse(data)
+print(domain)

@@ -1,10 +1,9 @@
 from ply import yacc
-
 from pddllex import tokens
 from pddl.domain import Domain
 from pddl.requirements import Requirements
 from pddl.types import Type, Variables
-from pddl.predicate import Predicate
+from pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, GroupType
 from pddl.action import *
 
 print(tokens)
@@ -79,27 +78,72 @@ def p_predicate(p):
         pred = Predicate(p[2], p[3])
     p[0] = pred
 
+def p_empty(p):
+    'empty : '
+    pass
+
 
 def p_mixed_predicate_list(p):
     """mixed_predicate_list : mixed_predicate
-                      | mixed_predicate  mixed_predicate_list"""
+                      | mixed_predicate mixed_predicate_list
+                      """
     if len(p) == 2:
-        p[0] = [p[1]]
-    else:
-        m_p =  p[2]
+        if p[1]:
+            p[0] = [p[1]]
+    elif len(p) == 3:
+        m_p = p[2]
         m_p.insert(0,p[1])
         p[0] = m_p
 
 
+def p_predicate_group(p):
+    """predicate_group :  OR mixed_predicate_list
+                        | AND mixed_predicate_list
+                        | WHEN mixed_predicate mixed_predicate
+                        | quantify_group"""
+    spec = p[1]
+    if spec in ['and', 'or']:
+        if spec == 'and':
+            type = GroupType.AND
+        elif spec == 'or':
+            type = GroupType.OR
+        m_p = p[2]
+        p[0] = PredicateGroup(type, m_p)
+    elif spec == 'when':
+        p[0] = ConditionGroup(GroupType.WHEN, p[3], p[2])
+
+    if len(p) == 2:
+        p[0] = p[1]
+
+def p_quantify_group(p):
+    """quantify_group :  FORALL LPAREN param_list RPAREN mixed_predicate
+                       | EXISTS LPAREN param_list RPAREN mixed_predicate """
+    spec = p[1]
+    if spec in ['forall', 'exists']:
+        params = p[3]
+        if isinstance(p[5], (QuantifyGroup, ConditionGroup)):
+            raise Exception("Wrong Syntax for quantifying: " + p)
+        if spec == 'forall':
+            type = GroupType.FORALL
+        else:
+            type = GroupType.EXISTS
+        p[0] = QuantifyGroup(type, p[5], params)
+
+
 def p_mixed_predicate(p):
     """mixed_predicate : LPAREN NAME mixed_list RPAREN
-                 | LPAREN NOT mixed_predicate RPAREN"""
-    if not p[2] == 'not':
-        p[0] = Predicate(p[2],p[3]['var'], p[3]['const'])
-    else:
-        pred = p[3]
-        pred.negation = True
-        p[0] = pred
+                       | LPAREN NOT mixed_predicate RPAREN
+                       | LPAREN predicate_group RPAREN
+                       """
+    if len(p) == 4:
+        p[0] = p[2]
+    elif len(p) == 5:
+        if not p[2] == 'not':
+            p[0] = Predicate(p[2],p[3]['var'], p[3]['const'])
+        else:
+            pred = p[3]
+            pred.negation = True
+            p[0] = pred
 
 
 def p_param_list(p):
@@ -130,11 +174,17 @@ def p_parameter_def(p):
 
 def p_precondition_def(p):
     """precondition_def :  ACT_PRE mixed_predicate
+                        |  ACT_PRE LPAREN OR mixed_predicate_list RPAREN
                         |  ACT_PRE LPAREN AND mixed_predicate_list RPAREN"""
     if len(p) == 3:
         p[0] = [p[2]]
     else:
-        p[0] = p[4]
+        if p[3] == 'or':
+            type = GroupType.OR
+        else:
+            type = GroupType.AND
+
+        p[0] = PredicateGroup(type, p[4])
 
 
 def p_effect_def(p):
