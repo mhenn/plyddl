@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class Predicate:
 
     def __init__(self, name, vars, consts=[], negation=False):
@@ -8,6 +7,7 @@ class Predicate:
         self.vars = vars
         self.consts = consts
         self.negation = negation
+        self.type = type
 
     def add(self, var):
         self.vars.insert(0, var)

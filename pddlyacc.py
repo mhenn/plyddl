@@ -134,16 +134,19 @@ def p_mixed_predicate(p):
     """mixed_predicate : LPAREN NAME mixed_list RPAREN
                        | LPAREN NOT mixed_predicate RPAREN
                        | LPAREN predicate_group RPAREN
+                       | LPAREN EQUALS var_list RPAREN
                        """
     if len(p) == 4:
         p[0] = p[2]
     elif len(p) == 5:
-        if not p[2] == 'not':
-            p[0] = Predicate(p[2],p[3]['var'], p[3]['const'])
-        else:
+        if p[2] == 'not':
             pred = p[3]
             pred.negation = True
             p[0] = pred
+        elif p[2] == '=':
+            p[0] = Predicate('=', p[3])
+        else:
+            p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
 
 
 def p_param_list(p):

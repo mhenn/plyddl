@@ -38,6 +38,7 @@ data = '''
                 (exists (?c - crane)
                     (crane-is-free ?c)
                 )
+                (not (= ?s1 ?s2))
 
             )
             :effect (and
