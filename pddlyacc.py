@@ -1,10 +1,15 @@
 from ply import yacc
 from pddllex import tokens
-from pddl.domain import Domain
-from pddl.requirements import Requirements
-from pddl.types import Type, Variables
+from pddl.domain.domain import Domain
+from pddl.domain.requirements import Requirements
+from pddl.domain.types import Type, Variables
 from pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, GroupType
-from pddl.action import *
+from pddl.domain.action import *
+
+from pddl.problem.problem import Problem
+from pddl.problem.objects import ProblemObjects
+from pddl.problem.init import Init
+from pddl.problem.goal import Goal
 
 print(tokens)
 
@@ -206,28 +211,33 @@ def p_effect_def(p):
 
 def p_problem(p):
     """problem : problem_def pb_domain_def objects_def init_def goal_def"""
+    p[0] = Problem(p[1], p[2], p[3], p[4], p[5])
 
 
 def p_problem_def(p):
     """problem_def : LPAREN PROBLEM NAME RPAREN"""
+    p[0] = p[3]
 
 
 def p_pb_domain_def(p):
     """pb_domain_def : LPAREN PB_DOMAIN NAME RPAREN"""
+    p[0] = p[3]
 
 
 def p_objects_def(p):
     """objects_def : LPAREN OBJECTS type_list RPAREN """
+    p[0] = p[3]
 
 
 def p_init_def(p):
     """init_def : LPAREN INIT mixed_predicate_list RPAREN"""
+    p[0] = p[3]
+
 
 
 def p_goal_def(p):
-    """goal_def :  LPAREN GOAL mixed_predicate RPAREN
-                |  LPAREN GOAL LPAREN AND mixed_predicate_list RPAREN RPAREN"""
-
+    """goal_def :  LPAREN GOAL mixed_predicate RPAREN"""
+    p[0] = p[3]
 
 ###############
 #####UTILS#####

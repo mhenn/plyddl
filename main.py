@@ -83,5 +83,5 @@ pb = '''(define
 '''
 
 
-domain = parser.parse(data)
+domain = parser.parse(pb)
 print(domain)
