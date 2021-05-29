@@ -21,8 +21,12 @@ def p_pddl(p):
 
 
 def p_domain(p):
-    """domain :  domain_def requirements_def types_def predicates_def action_def"""
-    p[0] = Domain(p[1], p[2],p[3], p[4], p[5])
+    """domain :  domain_def requirements_def types_def predicates_def action_def
+              |  domain_def requirements_def types_def predicates_def function_def action_def"""
+    if len(p) == 6:
+        p[0] = Domain(p[1], p[2], p[3], p[4], p[5])
+    else:
+        p[0] = Domain(p[1], p[2], p[3], p[4], p[6], p[5])
 
 
 def p_domain_def(p):
@@ -40,20 +44,21 @@ def p_types_def(p):
     p[0] = p[3]
 
 
+def p_function_def(p):
+    """function_def : LPAREN FUNCTIONS predicate_list RPAREN"""
+    if len(p) == 5:
+        p[0] = p[3]
+
+
 def p_type_list(p):
-    """type_list : NAME MINUS NAME
-                 | NAME type_list
-                 | NAME MINUS NAME type_list"""
-    if len(p) == 4:
-        p[0] = [Type([p[1]],p[3])]
-    elif len(p) == 3:
-        t = p[2]
-        t[-1].add(p[1])
-        p[0] = t
-    elif len(p) == 5:
-        t = p[4]
-        t.insert(0,Type([p[1]], p[3]))
-        p[0] = t
+    """type_list : NAME
+                 | NAME type_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        lst = p[2]
+        lst.insert(0, p[1])
+        p[0] = lst
 
 
 def p_predicates_def(p):
@@ -68,12 +73,13 @@ def p_predicate_list(p):
         p[0] = [p[1]]
     else:
         preds = p[2]
-        preds.insert(0,p[1])
+        preds.insert(0, p[1])
         p[0] = preds
 
 
 def p_predicate(p):
     """predicate : LPAREN NAME param_list RPAREN
+                 | LPAREN NAME RPAREN
                  | LPAREN NOT predicate RPAREN"""
 
     if p[2] == '-':
@@ -83,9 +89,18 @@ def p_predicate(p):
         pred = Predicate(p[2], p[3])
     p[0] = pred
 
-def p_empty(p):
-    'empty : '
-    pass
+
+def p_precond_predicate_list(p):
+    """precond_predicate_list : mixed_predicate
+                              | mixed_predicate precond_predicate_list
+                              | quantify_group  precond_predicate_list"""
+    if len(p) == 2:
+        if p[1]:
+            p[0] = [p[1]]
+    elif len(p) == 3:
+        m_p = p[2]
+        m_p.insert(0, p[1])
+        p[0] = m_p
 
 
 def p_mixed_predicate_list(p):
@@ -97,52 +112,49 @@ def p_mixed_predicate_list(p):
             p[0] = [p[1]]
     elif len(p) == 3:
         m_p = p[2]
-        m_p.insert(0,p[1])
+        m_p.insert(0, p[1])
         p[0] = m_p
 
 
 def p_predicate_group(p):
-    """predicate_group :  OR mixed_predicate_list
-                        | AND mixed_predicate_list
-                        | WHEN mixed_predicate mixed_predicate
-                        | quantify_group"""
+    """predicate_group :  LPAREN OR mixed_predicate_list RPAREN
+                        | LPAREN AND mixed_predicate_list RPAREN
+                        | LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+                        """
     spec = p[1]
     if spec in ['and', 'or']:
         if spec == 'and':
             type = GroupType.AND
         elif spec == 'or':
             type = GroupType.OR
-        m_p = p[2]
+        m_p = p[3]
         p[0] = PredicateGroup(type, m_p)
     elif spec == 'when':
-        p[0] = ConditionGroup(GroupType.WHEN, p[3], p[2])
+        p[0] = ConditionGroup(GroupType.WHEN, p[4], p[3])
 
-    if len(p) == 2:
-        p[0] = p[1]
 
 def p_quantify_group(p):
-    """quantify_group :  FORALL LPAREN param_list RPAREN mixed_predicate
-                       | EXISTS LPAREN param_list RPAREN mixed_predicate """
-    spec = p[1]
+    """quantify_group :  LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+                       | LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN"""
+
+    spec = p[2]
     if spec in ['forall', 'exists']:
-        params = p[3]
-        if isinstance(p[5], (QuantifyGroup, ConditionGroup)):
-            raise Exception("Wrong Syntax for quantifying: " + p)
+        params = p[4]
         if spec == 'forall':
             type = GroupType.FORALL
         else:
             type = GroupType.EXISTS
-        p[0] = QuantifyGroup(type, p[5], params)
+        p[0] = QuantifyGroup(type, p[6], params)
 
 
 def p_mixed_predicate(p):
     """mixed_predicate : LPAREN NAME mixed_list RPAREN
                        | LPAREN NOT mixed_predicate RPAREN
-                       | LPAREN predicate_group RPAREN
+                       | predicate_group
                        | LPAREN EQUALS var_list RPAREN
                        """
-    if len(p) == 4:
-        p[0] = p[2]
+    if len(p) == 2:
+        p[0] = p[1]
     elif len(p) == 5:
         if p[2] == 'not':
             pred = p[3]
@@ -166,7 +178,7 @@ def p_param_list(p):
         p[0] = t
     elif len(p) == 5:
         t = p[4]
-        t.insert(0,Variables([p[1]], p[3]))
+        t.insert(0, Variables([p[1]], p[3]))
         p[0] = t
 
 
@@ -181,27 +193,14 @@ def p_parameter_def(p):
 
 
 def p_precondition_def(p):
-    """precondition_def :  ACT_PRE mixed_predicate
-                        |  ACT_PRE LPAREN OR mixed_predicate_list RPAREN
-                        |  ACT_PRE LPAREN AND mixed_predicate_list RPAREN"""
+    """precondition_def :  ACT_PRE precond_predicate_list"""
     if len(p) == 3:
-        p[0] = [p[2]]
-    else:
-        if p[3] == 'or':
-            type = GroupType.OR
-        else:
-            type = GroupType.AND
-
-        p[0] = PredicateGroup(type, p[4])
+        p[0] = p[2]
 
 
 def p_effect_def(p):
-    """effect_def : ACT_EFF mixed_predicate
-                  | ACT_EFF LPAREN AND mixed_predicate_list RPAREN"""
-    if len(p) == 2:
-        p[0] = [p[2]]
-    else:
-        p[0] = p[4]
+    """effect_def : ACT_EFF mixed_predicate_list"""
+    p[0] = p[2]
 
 
 ###############
@@ -225,8 +224,24 @@ def p_pb_domain_def(p):
 
 
 def p_objects_def(p):
-    """objects_def : LPAREN OBJECTS type_list RPAREN """
+    """objects_def : LPAREN OBJECTS object_list RPAREN """
     p[0] = p[3]
+
+
+def p_object_list(p):
+    """object_list : NAME MINUS NAME
+                 | NAME object_list
+                 | NAME MINUS NAME object_list"""
+    if len(p) == 4:
+        p[0] = [Type([p[1]], p[3])]
+    elif len(p) == 3:
+        t = p[2]
+        t[-1].add(p[1])
+        p[0] = t
+    elif len(p) == 5:
+        t = p[4]
+        t.insert(0, Type([p[1]], p[3]))
+        p[0] = t
 
 
 def p_init_def(p):
@@ -234,14 +249,15 @@ def p_init_def(p):
     p[0] = p[3]
 
 
-
 def p_goal_def(p):
-    """goal_def :  LPAREN GOAL mixed_predicate RPAREN"""
+    """goal_def :  LPAREN GOAL precond_predicate_list RPAREN"""
     p[0] = p[3]
+
 
 ###############
 #####UTILS#####
 ###############
+
 def p_constant_list(p):
     """constant_list : NAME
                      | NAME constant_list"""
@@ -249,7 +265,7 @@ def p_constant_list(p):
         p[0] = [p[1]]
     else:
         consts = p[2]
-        consts.insert(0,p[1])
+        consts.insert(0, p[1])
         p[0] = consts
 
 

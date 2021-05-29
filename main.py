@@ -5,8 +5,8 @@ data = '''
         (domain construction)
         (:requirements :strips :typing)
         (:types
-            site material - object
-            bricks cables windows - material
+             object
+             material
         )
         (:predicates 
             (walls-built ?s - site)
@@ -17,6 +17,7 @@ data = '''
             (on-site ?m - material ?s - site)
             (material-used ?m - material)
         )
+        
         (:action BUILD-WALL
             :parameters (?s - site ?b - bricks)
             :precondition (and 
@@ -65,8 +66,6 @@ pb = '''(define
     (:objects 
         s1 - site 
         b - bricks 
-        w - windows 
-        c - cables
     )
     (:init
         (on-site b s1)
@@ -83,5 +82,5 @@ pb = '''(define
 '''
 
 
-domain = parser.parse(pb)
+domain = parser.parse(data)
 print(domain)
