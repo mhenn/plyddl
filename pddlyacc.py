@@ -3,7 +3,7 @@ from pddllex import tokens
 from pddl.domain.domain import Domain
 from pddl.domain.requirements import Requirements
 from pddl.domain.types import Type, Variables
-from pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, GroupType
+from pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, NumericGroup, GroupType
 from pddl.domain.action import *
 
 from pddl.problem.problem import Problem
@@ -91,16 +91,8 @@ def p_predicate(p):
 
 
 def p_precond_predicate_list(p):
-    """precond_predicate_list : mixed_predicate
-                              | mixed_predicate precond_predicate_list
-                              | quantify_group  precond_predicate_list"""
-    if len(p) == 2:
-        if p[1]:
-            p[0] = [p[1]]
-    elif len(p) == 3:
-        m_p = p[2]
-        m_p.insert(0, p[1])
-        p[0] = m_p
+    """precond_predicate_list : mixed_predicate_list"""
+    p[0] = p[1]
 
 
 def p_mixed_predicate_list(p):
@@ -108,8 +100,7 @@ def p_mixed_predicate_list(p):
                       | mixed_predicate mixed_predicate_list
                       """
     if len(p) == 2:
-        if p[1]:
-            p[0] = [p[1]]
+        p[0] = [p[1]]
     elif len(p) == 3:
         m_p = p[2]
         m_p.insert(0, p[1])
@@ -121,7 +112,7 @@ def p_predicate_group(p):
                         | LPAREN AND mixed_predicate_list RPAREN
                         | LPAREN WHEN mixed_predicate mixed_predicate RPAREN
                         """
-    spec = p[1]
+    spec = p[2]
     if spec in ['and', 'or']:
         if spec == 'and':
             type = GroupType.AND
@@ -147,23 +138,47 @@ def p_quantify_group(p):
         p[0] = QuantifyGroup(type, p[6], params)
 
 
+def p_simple_mixed_predicate(p):
+    """simple_mixed_predicate : LPAREN NAME mixed_list RPAREN
+                              | LPAREN EQUALS mixed_list RPAREN
+                              | LPAREN NOT simple_mixed_predicate RPAREN
+                              """
+
+    if p[2] == 'not':
+        pred = p[3]
+        pred.negation = True
+        p[0] = pred
+    elif p[2] == '+':
+        p[0] = Predicate('=',  p[3]['var'], p[3]['const'])
+    else:
+        p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
+
+
 def p_mixed_predicate(p):
-    """mixed_predicate : LPAREN NAME mixed_list RPAREN
-                       | LPAREN NOT mixed_predicate RPAREN
+    """mixed_predicate : simple_mixed_predicate
                        | predicate_group
-                       | LPAREN EQUALS var_list RPAREN
+                       | quantify_group
+                       | numeric_predicate
                        """
     if len(p) == 2:
         p[0] = p[1]
-    elif len(p) == 5:
-        if p[2] == 'not':
-            pred = p[3]
-            pred.negation = True
-            p[0] = pred
-        elif p[2] == '=':
-            p[0] = Predicate('=', p[3])
-        else:
-            p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
+
+
+def p_numeric_predicate(p):
+    """numeric_predicate : LPAREN NOT numeric_predicate RPAREN
+                         | LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+                         | LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+                         | LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+                         | LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+                         | LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+                         | LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+                         """
+    if len(p) == 5:
+        num = p[3]
+        num.negation = True
+        p[0] = num
+    else:
+        p[0] = NumericGroup(GroupType.NUMERIC, p[3], p[2], p[4])
 
 
 def p_param_list(p):
@@ -193,9 +208,8 @@ def p_parameter_def(p):
 
 
 def p_precondition_def(p):
-    """precondition_def :  ACT_PRE precond_predicate_list"""
-    if len(p) == 3:
-        p[0] = p[2]
+    """precondition_def :  ACT_PRE mixed_predicate_list"""
+    p[0] = p[2]
 
 
 def p_effect_def(p):

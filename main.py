@@ -43,8 +43,23 @@ data = '''
 
             )
             :effect (and
+                (increase (score s) 199)
+                (when
+                    (not (= (scared-time g0) 0))
+                    (decrease (scared-time g0) 1)
+                )
+
                 (walls-built ?s)
                 (material-used ?b)
+                (when
+                    (pill-at ?p2)
+                    (and
+                        (assign (scared-time g0) 40)
+                        (assign (scared-time g1) 40)
+                   )
+                )
+
+
             )
             ; :expansion ;deprecated
         )

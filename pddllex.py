@@ -58,6 +58,11 @@ reserved = {
  'forall'       :   'FORALL',
  'exists'       :   'EXISTS',
  'when'         :   'WHEN',
+ 'increase'     :    'INCREASE',
+ 'decrease'     :   'DECREASE',
+ 'assign'       :   'ASSIGN',
+ '>'            :   'GREATER',
+ '<'            :   'LESSER',
 }
 
 tokens += tuple(reserved.values())

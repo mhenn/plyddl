@@ -1,12 +1,13 @@
 from enum import Enum
 
+
 class Predicate:
 
-    def __init__(self, name, vars, consts=[], negation=False):
+    def __init__(self, name, vars, consts=[]):
         self.name = name
         self.vars = vars
         self.consts = consts
-        self.negation = negation
+        self.negation = False
         self.type = type
 
     def add(self, var):
@@ -22,6 +23,7 @@ class GroupType(Enum):
     FORALL = 2
     EXISTS = 3
     WHEN = 4
+    NUMERIC = 5
 
 
 class PredicateGroup:
@@ -44,3 +46,13 @@ class ConditionGroup(PredicateGroup):
     def __init__(self, type, predicate, antecedent):
         super().__init__( type, predicate)
         self.antecedent = antecedent
+
+
+class NumericGroup(PredicateGroup):
+
+    def __init__(self, type, predicate, operator, value):
+        super().__init__(type,predicate)
+        self.operator =operator
+        self.value = value
+        self.negation = False
+
