@@ -8,8 +8,12 @@ def read_file(name):
     return ''.join(data)
 
 
-data = read_file('test.pddl')
-#data = read_file('pacman_domain.pddl')
+#data = read_file('test.pddl')
+#data = read_file('pacman/domain.pddl')
+data = read_file('pacman/pb0.pddl')
+
+#data = read_file('/blocksworld/domain.pddl')
+#data = read_file('/blocksworld/pb.pddl')
 
 domain = parser.parse(data)
 print(domain)

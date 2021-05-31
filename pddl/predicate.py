@@ -8,7 +8,6 @@ class Predicate:
         self.vars = vars
         self.consts = consts
         self.negation = False
-        self.type = type
 
     def add(self, var):
         self.vars.insert(0, var)
@@ -37,22 +36,22 @@ class PredicateGroup:
 class QuantifyGroup(PredicateGroup):
 
     def __init__(self, type, predicate, params):
-        super().__init__( type, predicate)
+        super().__init__(type, predicate)
         self.params = params
 
 
 class ConditionGroup(PredicateGroup):
 
     def __init__(self, type, predicate, antecedent):
-        super().__init__( type, predicate)
+        super().__init__(type, predicate)
         self.antecedent = antecedent
 
 
 class NumericGroup(PredicateGroup):
 
     def __init__(self, type, predicate, operator, value):
-        super().__init__(type,predicate)
-        self.operator =operator
+        super().__init__(type, predicate)
+        self.operator = operator
         self.value = value
         self.negation = False
 

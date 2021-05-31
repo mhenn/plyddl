@@ -9,6 +9,8 @@ tokens = (
     'LPAREN',
     'RPAREN',
     'EQUALS',
+    'GREATER',
+    'LESSER',
     'NAME',
     'VARIABLE',
     'COMMENT'
@@ -20,9 +22,11 @@ t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_ignore = ' \t'
 t_EQUALS = r'='
+t_GREATER = '>'
+t_LESSER = '<'
 
 reserved = {
- 'define'       :   'DEFINE',
+    'define'       :   'DEFINE',
  'domain'       :   'DOMAIN',
  ':extends'     :   'EXTENDS',
  ':requirements':   'REQS',
@@ -38,7 +42,7 @@ reserved = {
  ':numeric-fluents'     : 'REQ_NUMERIC_FLUENTS',
  ':adl'                 : 'REQ_ADL',
  ':functions'           : 'FUNCTIONS',
- ':metrics'             : 'METRICS',
+ ':metric'             : 'METRIC',
  ':types'       :   'TYPES',
  ':constants'   :   'CONST',
  ':predicates'  :   'PREDICATES',
@@ -61,8 +65,7 @@ reserved = {
  'increase'     :    'INCREASE',
  'decrease'     :   'DECREASE',
  'assign'       :   'ASSIGN',
- '>'            :   'GREATER',
- '<'            :   'LESSER',
+ 'maximize'     :   'MAXIMIZE'
 }
 
 tokens += tuple(reserved.values())

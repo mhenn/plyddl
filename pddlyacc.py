@@ -126,7 +126,7 @@ def p_precond_predicate_list(p):
 
 def p_mixed_predicate_list(p):
     """mixed_predicate_list : mixed_predicate
-                      | mixed_predicate mixed_predicate_list
+                            | mixed_predicate mixed_predicate_list
                       """
     if len(p) == 2:
         p[0] = [p[1]]
@@ -169,18 +169,22 @@ def p_quantify_group(p):
 
 def p_simple_mixed_predicate(p):
     """simple_mixed_predicate : LPAREN NAME mixed_list RPAREN
+                              | LPAREN NAME RPAREN
                               | LPAREN EQUALS mixed_list RPAREN
                               | LPAREN NOT simple_mixed_predicate RPAREN
                               """
 
-    if p[2] == 'not':
-        pred = p[3]
-        pred.negation = True
-        p[0] = pred
-    elif p[2] == '+':
-        p[0] = Predicate('=', p[3]['var'], p[3]['const'])
+    if len(p) == 4:
+        p[0] = Predicate(p[2],[],[])
     else:
-        p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
+        if p[2] == 'not':
+            pred = p[3]
+            pred.negation = True
+            p[0] = pred
+        elif p[2] == '+':
+            p[0] = Predicate('=', p[3]['var'], p[3]['const'])
+        else:
+            p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
 
 
 def p_mixed_predicate(p):
@@ -268,8 +272,13 @@ def p_effect_def(p):
 
 
 def p_problem(p):
-    """problem : problem_def pb_domain_def objects_def init_def goal_def"""
-    p[0] = Problem(p[1], p[2], p[3], p[4], p[5])
+    """problem : problem_def pb_domain_def objects_def init_def goal_def
+                | problem_def pb_domain_def objects_def init_def goal_def metric_def
+    """
+    if len(p) == 6:
+        p[0] = Problem(p[1], p[2], p[3], p[4], p[5])
+    else:
+        p[0] = Problem(p[1], p[2], p[3], p[4], p[5], p[6])
 
 
 def p_problem_def(p):
@@ -312,6 +321,15 @@ def p_goal_def(p):
     """goal_def :  LPAREN GOAL precond_predicate_list RPAREN"""
     p[0] = p[3]
 
+
+def p_metric_def(p):
+    """metric_def : LPAREN METRIC metric RPAREN"""
+    p[0] = p[3]
+
+
+def p_metric(p):
+    """metric : MAXIMIZE precond_predicate_list"""
+    p[0] = p[2]
 
 ###############
 #####UTILS#####
