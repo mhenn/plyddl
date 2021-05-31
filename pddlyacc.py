@@ -35,8 +35,37 @@ def p_domain_def(p):
 
 
 def p_requirements_def(p):
-    """requirements_def : LPAREN REQS REQ_STRIPS REQ_TYPING RPAREN"""
-    p[0] = Requirements([p[2], p[3]])
+    """requirements_def : LPAREN REQS requirement_list RPAREN"""
+    p[0] = Requirements(p[2])
+
+
+def p_requirement_list(p):
+    """requirement_list : requirement
+                        | requirement requirement_list"""
+
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        r_l = p[2]
+        r_l.insert(0, p[1])
+        p[0] = r_l
+
+
+def p_requirement(p):
+    """
+     requirement :  REQ_STRIPS
+                   | REQ_TYPING
+                   | REQ_DISJUNC_PREC
+                   | REQ_EQUALITY
+                   | REQ_EXIST_PREC
+                   | REQ_UNIV_PREC
+                   | REQ_QUANTIF_PREC
+                   | REQ_COND_EFF
+                   | REQ_FLUENTS
+                   | REQ_NUMERIC_FLUENTS
+                   | REQ_ADL
+    """
+    p[0] = p[1]
 
 
 def p_types_def(p):
@@ -149,7 +178,7 @@ def p_simple_mixed_predicate(p):
         pred.negation = True
         p[0] = pred
     elif p[2] == '+':
-        p[0] = Predicate('=',  p[3]['var'], p[3]['const'])
+        p[0] = Predicate('=', p[3]['var'], p[3]['const'])
     else:
         p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
 
@@ -198,7 +227,23 @@ def p_param_list(p):
 
 
 def p_action_def(p):
-    """action_def : LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN"""
+    """action_def : action_list"""
+    p[0] = p[1]
+
+
+def p_action_list(p):
+    """action_list : action
+                  | action action_list"""
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        a_l = p[2]
+        a_l.insert(0, p[1])
+        p[0] = a_l
+
+
+def p_action(p):
+    """action : LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN"""
     p[0] = Action(p[3], p[4], p[5], p[6])
 
 
