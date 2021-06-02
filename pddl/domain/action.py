@@ -5,7 +5,7 @@ class Action:
         self.parameter = parameter
         self.precondition = precondition
         self.effects = effects
-
+        self.ground = []
 
 class Precondition:
 

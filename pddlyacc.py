@@ -222,7 +222,7 @@ def p_param_list(p):
         p[0] = [Variables([p[1]], p[3])]
     elif len(p) == 3:
         t = p[2]
-        t[-1].add(p[1])
+        t[0].add(p[1])
         p[0] = t
     elif len(p) == 5:
         t = p[4]
@@ -237,7 +237,7 @@ def p_action_def(p):
 
 def p_action_list(p):
     """action_list : action
-                  | action action_list"""
+                   | action action_list"""
     if len(p) == 2:
         p[0] = [p[1]]
     else:
@@ -304,7 +304,7 @@ def p_object_list(p):
         p[0] = [Type([p[1]], p[3])]
     elif len(p) == 3:
         t = p[2]
-        t[-1].add(p[1])
+        t[0].add(p[1])
         p[0] = t
     elif len(p) == 5:
         t = p[4]
