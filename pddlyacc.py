@@ -182,9 +182,9 @@ def p_simple_mixed_predicate(p):
             pred.negation = True
             p[0] = pred
         elif p[2] == '+':
-            p[0] = Predicate('=', p[3]['var'], p[3]['const'])
+            p[0] = Predicate('=', p[3]) #p[3]['var'], p[3]['const'])
         else:
-            p[0] = Predicate(p[2], p[3]['var'], p[3]['const'])
+            p[0] = Predicate(p[2], p[3])#['var'], p[3]['const'])
 
 
 def p_mixed_predicate(p):
@@ -353,13 +353,14 @@ def p_mixed_list(p):
                   | NAME mixed_list"""
     m_l = []
     if len(p) == 2:
-        m_l = {'var': [], 'const': []}
+        m_l = [] #{'var': [], 'const': []}
     else:
         m_l = p[2]
-    if p[1][0] == '?':
-        m_l['var'].insert(0, p[1])
-    else:
-        m_l['const'].insert(0, p[1])
+    #if p[1][0] == '?':
+    #    m_l['var'].insert(0, p[1])
+    #else:
+    #    m_l['const'].insert(0, p[1])
+    m_l.insert(0,p[1])
     p[0] = m_l
 
 

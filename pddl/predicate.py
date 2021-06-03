@@ -3,11 +3,20 @@ from enum import Enum
 
 class Predicate:
 
-    def __init__(self, name, vars, consts=[]):
+    #def __init__(self, name, vars, params, consts=[]):
+    def __init__(self, name, params):
         self.name = name
-        self.vars = vars
-        self.consts = consts
+        self.params = params
+        #self.vars = vars
+        #self.consts = consts
         self.negation = False
+
+    def update_params(self, param):
+        for i in range(len(self.params)):
+            p = self.params[i]
+            if p in param:
+                self.params[i] = param[p]
+
 
     def add(self, var):
         self.vars.insert(0, var)
@@ -31,6 +40,14 @@ class PredicateGroup:
         self.type = type
         self.predicate = predicate
         pass
+
+    def update_params(self, params):
+        pred = self.predicate
+        if type(pred) == list:
+            for p in pred:
+                p.update_params(params)
+        else:
+            self.predicate.update_params(params)
 
 
 class QuantifyGroup(PredicateGroup):
