@@ -1,0 +1,2392 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    CONST
+    EXTENDS
+    PLUS
+    STRING
+    TIMELESS
+
+Grammar
+
+Rule 0     S' -> pddl
+Rule 1     pddl -> LPAREN DEFINE domain RPAREN
+Rule 2     pddl -> LPAREN DEFINE problem RPAREN
+Rule 3     domain -> domain_def requirements_def types_def predicates_def action_def
+Rule 4     domain -> domain_def requirements_def types_def predicates_def function_def action_def
+Rule 5     domain_def -> LPAREN DOMAIN NAME RPAREN
+Rule 6     requirements_def -> LPAREN REQS requirement_list RPAREN
+Rule 7     requirement_list -> requirement
+Rule 8     requirement_list -> requirement requirement_list
+Rule 9     requirement -> REQ_STRIPS
+Rule 10    requirement -> REQ_TYPING
+Rule 11    requirement -> REQ_DISJUNC_PREC
+Rule 12    requirement -> REQ_EQUALITY
+Rule 13    requirement -> REQ_EXIST_PREC
+Rule 14    requirement -> REQ_UNIV_PREC
+Rule 15    requirement -> REQ_QUANTIF_PREC
+Rule 16    requirement -> REQ_COND_EFF
+Rule 17    requirement -> REQ_FLUENTS
+Rule 18    requirement -> REQ_NUMERIC_FLUENTS
+Rule 19    requirement -> REQ_ADL
+Rule 20    types_def -> LPAREN TYPES type_list RPAREN
+Rule 21    function_def -> LPAREN FUNCTIONS predicate_list RPAREN
+Rule 22    type_list -> NAME
+Rule 23    type_list -> NAME type_list
+Rule 24    predicates_def -> LPAREN PREDICATES predicate_list RPAREN
+Rule 25    predicate_list -> predicate
+Rule 26    predicate_list -> predicate predicate_list
+Rule 27    predicate -> LPAREN NAME param_list RPAREN
+Rule 28    predicate -> LPAREN NAME RPAREN
+Rule 29    predicate -> LPAREN NOT predicate RPAREN
+Rule 30    precond_predicate_list -> mixed_predicate_list
+Rule 31    mixed_predicate_list -> mixed_predicate
+Rule 32    mixed_predicate_list -> mixed_predicate mixed_predicate_list
+Rule 33    predicate_group -> LPAREN OR mixed_predicate_list RPAREN
+Rule 34    predicate_group -> LPAREN AND mixed_predicate_list RPAREN
+Rule 35    predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+Rule 36    quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+Rule 37    quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+Rule 38    simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN
+Rule 39    simple_mixed_predicate -> LPAREN NAME RPAREN
+Rule 40    simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN
+Rule 41    simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN
+Rule 42    mixed_predicate -> simple_mixed_predicate
+Rule 43    mixed_predicate -> predicate_group
+Rule 44    mixed_predicate -> quantify_group
+Rule 45    mixed_predicate -> numeric_predicate
+Rule 46    numeric_predicate -> LPAREN NOT numeric_predicate RPAREN
+Rule 47    numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+Rule 48    numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+Rule 49    numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+Rule 50    numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+Rule 51    numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+Rule 52    numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+Rule 53    param_list -> VARIABLE MINUS NAME
+Rule 54    param_list -> VARIABLE param_list
+Rule 55    param_list -> VARIABLE MINUS NAME param_list
+Rule 56    action_def -> action_list
+Rule 57    action_list -> action
+Rule 58    action_list -> action action_list
+Rule 59    action -> LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN
+Rule 60    parameter_def -> ACT_PARAM LPAREN param_list RPAREN
+Rule 61    precondition_def -> ACT_PRE mixed_predicate_list
+Rule 62    effect_def -> ACT_EFF mixed_predicate_list
+Rule 63    problem -> problem_def pb_domain_def objects_def init_def goal_def
+Rule 64    problem -> problem_def pb_domain_def objects_def init_def goal_def metric_def
+Rule 65    problem_def -> LPAREN PROBLEM NAME RPAREN
+Rule 66    pb_domain_def -> LPAREN PB_DOMAIN NAME RPAREN
+Rule 67    objects_def -> LPAREN OBJECTS object_list RPAREN
+Rule 68    object_list -> NAME MINUS NAME
+Rule 69    object_list -> NAME object_list
+Rule 70    object_list -> NAME MINUS NAME object_list
+Rule 71    init_def -> LPAREN INIT mixed_predicate_list RPAREN
+Rule 72    goal_def -> LPAREN GOAL precond_predicate_list RPAREN
+Rule 73    metric_def -> LPAREN METRIC metric RPAREN
+Rule 74    metric -> MAXIMIZE precond_predicate_list
+Rule 75    constant_list -> NAME
+Rule 76    constant_list -> NAME constant_list
+Rule 77    mixed_list -> VARIABLE
+Rule 78    mixed_list -> NAME
+Rule 79    mixed_list -> VARIABLE mixed_list
+Rule 80    mixed_list -> NAME mixed_list
+Rule 81    var_list -> VARIABLE
+Rule 82    var_list -> VARIABLE var_list
+
+Terminals, with rules where they appear
+
+ACTION               : 59
+ACT_EFF              : 62
+ACT_PARAM            : 60
+ACT_PRE              : 61
+AND                  : 34
+ASSIGN               : 52
+COMMENT              : 
+CONST                : 
+DECREASE             : 51
+DEFINE               : 1 2
+DOMAIN               : 5
+EQUALS               : 40 47
+EXISTS               : 37
+EXTENDS              : 
+FORALL               : 36
+FUNCTIONS            : 21
+GOAL                 : 72
+GREATER              : 49
+INCREASE             : 50
+INIT                 : 71
+LESSER               : 48
+LPAREN               : 1 2 5 6 20 21 24 27 28 29 33 34 35 36 36 37 37 38 39 40 41 46 47 48 49 50 51 52 59 60 65 66 67 71 72 73
+MAXIMIZE             : 74
+METRIC               : 73
+MINUS                : 53 55 68 70
+NAME                 : 5 22 23 27 28 38 39 53 55 59 65 66 68 68 69 70 70 75 76 78 80
+NOT                  : 29 41 46
+NUMBER               : 47 48 49 50 51 52
+OBJECTS              : 67
+OR                   : 33
+PB_DOMAIN            : 66
+PLUS                 : 
+PREDICATES           : 24
+PROBLEM              : 65
+REQS                 : 6
+REQ_ADL              : 19
+REQ_COND_EFF         : 16
+REQ_DISJUNC_PREC     : 11
+REQ_EQUALITY         : 12
+REQ_EXIST_PREC       : 13
+REQ_FLUENTS          : 17
+REQ_NUMERIC_FLUENTS  : 18
+REQ_QUANTIF_PREC     : 15
+REQ_STRIPS           : 9
+REQ_TYPING           : 10
+REQ_UNIV_PREC        : 14
+RPAREN               : 1 2 5 6 20 21 24 27 28 29 33 34 35 36 36 37 37 38 39 40 41 46 47 48 49 50 51 52 59 60 65 66 67 71 72 73
+STRING               : 
+TIMELESS             : 
+TYPES                : 20
+VARIABLE             : 53 54 55 77 79 81 82
+WHEN                 : 35
+error                : 
+
+Nonterminals, with rules where they appear
+
+action               : 57 58
+action_def           : 3 4
+action_list          : 56 58
+constant_list        : 76
+domain               : 1
+domain_def           : 3 4
+effect_def           : 59
+function_def         : 4
+goal_def             : 63 64
+init_def             : 63 64
+metric               : 73
+metric_def           : 64
+mixed_list           : 38 40 79 80
+mixed_predicate      : 31 32 35 35 36 37
+mixed_predicate_list : 30 32 33 34 61 62 71
+numeric_predicate    : 45 46
+object_list          : 67 69 70
+objects_def          : 63 64
+param_list           : 27 36 37 54 55 60
+parameter_def        : 59
+pb_domain_def        : 63 64
+pddl                 : 0
+precond_predicate_list : 72 74
+precondition_def     : 59
+predicate            : 25 26 29
+predicate_group      : 43
+predicate_list       : 21 24 26
+predicates_def       : 3 4
+problem              : 2
+problem_def          : 63 64
+quantify_group       : 44
+requirement          : 7 8
+requirement_list     : 6 8
+requirements_def     : 3 4
+simple_mixed_predicate : 41 42 47 48 49 50 51 52
+type_list            : 20 23
+types_def            : 3 4
+var_list             : 82
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . pddl
+    (1) pddl -> . LPAREN DEFINE domain RPAREN
+    (2) pddl -> . LPAREN DEFINE problem RPAREN
+
+    LPAREN          shift and go to state 2
+
+    pddl                           shift and go to state 1
+
+state 1
+
+    (0) S' -> pddl .
+
+
+
+state 2
+
+    (1) pddl -> LPAREN . DEFINE domain RPAREN
+    (2) pddl -> LPAREN . DEFINE problem RPAREN
+
+    DEFINE          shift and go to state 3
+
+
+state 3
+
+    (1) pddl -> LPAREN DEFINE . domain RPAREN
+    (2) pddl -> LPAREN DEFINE . problem RPAREN
+    (3) domain -> . domain_def requirements_def types_def predicates_def action_def
+    (4) domain -> . domain_def requirements_def types_def predicates_def function_def action_def
+    (63) problem -> . problem_def pb_domain_def objects_def init_def goal_def
+    (64) problem -> . problem_def pb_domain_def objects_def init_def goal_def metric_def
+    (5) domain_def -> . LPAREN DOMAIN NAME RPAREN
+    (65) problem_def -> . LPAREN PROBLEM NAME RPAREN
+
+    LPAREN          shift and go to state 4
+
+    domain                         shift and go to state 5
+    problem                        shift and go to state 6
+    domain_def                     shift and go to state 7
+    problem_def                    shift and go to state 8
+
+state 4
+
+    (5) domain_def -> LPAREN . DOMAIN NAME RPAREN
+    (65) problem_def -> LPAREN . PROBLEM NAME RPAREN
+
+    DOMAIN          shift and go to state 9
+    PROBLEM         shift and go to state 10
+
+
+state 5
+
+    (1) pddl -> LPAREN DEFINE domain . RPAREN
+
+    RPAREN          shift and go to state 11
+
+
+state 6
+
+    (2) pddl -> LPAREN DEFINE problem . RPAREN
+
+    RPAREN          shift and go to state 12
+
+
+state 7
+
+    (3) domain -> domain_def . requirements_def types_def predicates_def action_def
+    (4) domain -> domain_def . requirements_def types_def predicates_def function_def action_def
+    (6) requirements_def -> . LPAREN REQS requirement_list RPAREN
+
+    LPAREN          shift and go to state 14
+
+    requirements_def               shift and go to state 13
+
+state 8
+
+    (63) problem -> problem_def . pb_domain_def objects_def init_def goal_def
+    (64) problem -> problem_def . pb_domain_def objects_def init_def goal_def metric_def
+    (66) pb_domain_def -> . LPAREN PB_DOMAIN NAME RPAREN
+
+    LPAREN          shift and go to state 16
+
+    pb_domain_def                  shift and go to state 15
+
+state 9
+
+    (5) domain_def -> LPAREN DOMAIN . NAME RPAREN
+
+    NAME            shift and go to state 17
+
+
+state 10
+
+    (65) problem_def -> LPAREN PROBLEM . NAME RPAREN
+
+    NAME            shift and go to state 18
+
+
+state 11
+
+    (1) pddl -> LPAREN DEFINE domain RPAREN .
+
+    $end            reduce using rule 1 (pddl -> LPAREN DEFINE domain RPAREN .)
+
+
+state 12
+
+    (2) pddl -> LPAREN DEFINE problem RPAREN .
+
+    $end            reduce using rule 2 (pddl -> LPAREN DEFINE problem RPAREN .)
+
+
+state 13
+
+    (3) domain -> domain_def requirements_def . types_def predicates_def action_def
+    (4) domain -> domain_def requirements_def . types_def predicates_def function_def action_def
+    (20) types_def -> . LPAREN TYPES type_list RPAREN
+
+    LPAREN          shift and go to state 20
+
+    types_def                      shift and go to state 19
+
+state 14
+
+    (6) requirements_def -> LPAREN . REQS requirement_list RPAREN
+
+    REQS            shift and go to state 21
+
+
+state 15
+
+    (63) problem -> problem_def pb_domain_def . objects_def init_def goal_def
+    (64) problem -> problem_def pb_domain_def . objects_def init_def goal_def metric_def
+    (67) objects_def -> . LPAREN OBJECTS object_list RPAREN
+
+    LPAREN          shift and go to state 23
+
+    objects_def                    shift and go to state 22
+
+state 16
+
+    (66) pb_domain_def -> LPAREN . PB_DOMAIN NAME RPAREN
+
+    PB_DOMAIN       shift and go to state 24
+
+
+state 17
+
+    (5) domain_def -> LPAREN DOMAIN NAME . RPAREN
+
+    RPAREN          shift and go to state 25
+
+
+state 18
+
+    (65) problem_def -> LPAREN PROBLEM NAME . RPAREN
+
+    RPAREN          shift and go to state 26
+
+
+state 19
+
+    (3) domain -> domain_def requirements_def types_def . predicates_def action_def
+    (4) domain -> domain_def requirements_def types_def . predicates_def function_def action_def
+    (24) predicates_def -> . LPAREN PREDICATES predicate_list RPAREN
+
+    LPAREN          shift and go to state 28
+
+    predicates_def                 shift and go to state 27
+
+state 20
+
+    (20) types_def -> LPAREN . TYPES type_list RPAREN
+
+    TYPES           shift and go to state 29
+
+
+state 21
+
+    (6) requirements_def -> LPAREN REQS . requirement_list RPAREN
+    (7) requirement_list -> . requirement
+    (8) requirement_list -> . requirement requirement_list
+    (9) requirement -> . REQ_STRIPS
+    (10) requirement -> . REQ_TYPING
+    (11) requirement -> . REQ_DISJUNC_PREC
+    (12) requirement -> . REQ_EQUALITY
+    (13) requirement -> . REQ_EXIST_PREC
+    (14) requirement -> . REQ_UNIV_PREC
+    (15) requirement -> . REQ_QUANTIF_PREC
+    (16) requirement -> . REQ_COND_EFF
+    (17) requirement -> . REQ_FLUENTS
+    (18) requirement -> . REQ_NUMERIC_FLUENTS
+    (19) requirement -> . REQ_ADL
+
+    REQ_STRIPS      shift and go to state 32
+    REQ_TYPING      shift and go to state 33
+    REQ_DISJUNC_PREC shift and go to state 34
+    REQ_EQUALITY    shift and go to state 35
+    REQ_EXIST_PREC  shift and go to state 36
+    REQ_UNIV_PREC   shift and go to state 37
+    REQ_QUANTIF_PREC shift and go to state 38
+    REQ_COND_EFF    shift and go to state 39
+    REQ_FLUENTS     shift and go to state 40
+    REQ_NUMERIC_FLUENTS shift and go to state 41
+    REQ_ADL         shift and go to state 42
+
+    requirement_list               shift and go to state 30
+    requirement                    shift and go to state 31
+
+state 22
+
+    (63) problem -> problem_def pb_domain_def objects_def . init_def goal_def
+    (64) problem -> problem_def pb_domain_def objects_def . init_def goal_def metric_def
+    (71) init_def -> . LPAREN INIT mixed_predicate_list RPAREN
+
+    LPAREN          shift and go to state 44
+
+    init_def                       shift and go to state 43
+
+state 23
+
+    (67) objects_def -> LPAREN . OBJECTS object_list RPAREN
+
+    OBJECTS         shift and go to state 45
+
+
+state 24
+
+    (66) pb_domain_def -> LPAREN PB_DOMAIN . NAME RPAREN
+
+    NAME            shift and go to state 46
+
+
+state 25
+
+    (5) domain_def -> LPAREN DOMAIN NAME RPAREN .
+
+    LPAREN          reduce using rule 5 (domain_def -> LPAREN DOMAIN NAME RPAREN .)
+
+
+state 26
+
+    (65) problem_def -> LPAREN PROBLEM NAME RPAREN .
+
+    LPAREN          reduce using rule 65 (problem_def -> LPAREN PROBLEM NAME RPAREN .)
+
+
+state 27
+
+    (3) domain -> domain_def requirements_def types_def predicates_def . action_def
+    (4) domain -> domain_def requirements_def types_def predicates_def . function_def action_def
+    (56) action_def -> . action_list
+    (21) function_def -> . LPAREN FUNCTIONS predicate_list RPAREN
+    (57) action_list -> . action
+    (58) action_list -> . action action_list
+    (59) action -> . LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN
+
+    LPAREN          shift and go to state 50
+
+    action_def                     shift and go to state 47
+    function_def                   shift and go to state 48
+    action_list                    shift and go to state 49
+    action                         shift and go to state 51
+
+state 28
+
+    (24) predicates_def -> LPAREN . PREDICATES predicate_list RPAREN
+
+    PREDICATES      shift and go to state 52
+
+
+state 29
+
+    (20) types_def -> LPAREN TYPES . type_list RPAREN
+    (22) type_list -> . NAME
+    (23) type_list -> . NAME type_list
+
+    NAME            shift and go to state 54
+
+    type_list                      shift and go to state 53
+
+state 30
+
+    (6) requirements_def -> LPAREN REQS requirement_list . RPAREN
+
+    RPAREN          shift and go to state 55
+
+
+state 31
+
+    (7) requirement_list -> requirement .
+    (8) requirement_list -> requirement . requirement_list
+    (7) requirement_list -> . requirement
+    (8) requirement_list -> . requirement requirement_list
+    (9) requirement -> . REQ_STRIPS
+    (10) requirement -> . REQ_TYPING
+    (11) requirement -> . REQ_DISJUNC_PREC
+    (12) requirement -> . REQ_EQUALITY
+    (13) requirement -> . REQ_EXIST_PREC
+    (14) requirement -> . REQ_UNIV_PREC
+    (15) requirement -> . REQ_QUANTIF_PREC
+    (16) requirement -> . REQ_COND_EFF
+    (17) requirement -> . REQ_FLUENTS
+    (18) requirement -> . REQ_NUMERIC_FLUENTS
+    (19) requirement -> . REQ_ADL
+
+    RPAREN          reduce using rule 7 (requirement_list -> requirement .)
+    REQ_STRIPS      shift and go to state 32
+    REQ_TYPING      shift and go to state 33
+    REQ_DISJUNC_PREC shift and go to state 34
+    REQ_EQUALITY    shift and go to state 35
+    REQ_EXIST_PREC  shift and go to state 36
+    REQ_UNIV_PREC   shift and go to state 37
+    REQ_QUANTIF_PREC shift and go to state 38
+    REQ_COND_EFF    shift and go to state 39
+    REQ_FLUENTS     shift and go to state 40
+    REQ_NUMERIC_FLUENTS shift and go to state 41
+    REQ_ADL         shift and go to state 42
+
+    requirement                    shift and go to state 31
+    requirement_list               shift and go to state 56
+
+state 32
+
+    (9) requirement -> REQ_STRIPS .
+
+    REQ_STRIPS      reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_TYPING      reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_DISJUNC_PREC reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_EQUALITY    reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_EXIST_PREC  reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_UNIV_PREC   reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_QUANTIF_PREC reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_COND_EFF    reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_FLUENTS     reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_NUMERIC_FLUENTS reduce using rule 9 (requirement -> REQ_STRIPS .)
+    REQ_ADL         reduce using rule 9 (requirement -> REQ_STRIPS .)
+    RPAREN          reduce using rule 9 (requirement -> REQ_STRIPS .)
+
+
+state 33
+
+    (10) requirement -> REQ_TYPING .
+
+    REQ_STRIPS      reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_TYPING      reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_DISJUNC_PREC reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_EQUALITY    reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_EXIST_PREC  reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_UNIV_PREC   reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_QUANTIF_PREC reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_COND_EFF    reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_FLUENTS     reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_NUMERIC_FLUENTS reduce using rule 10 (requirement -> REQ_TYPING .)
+    REQ_ADL         reduce using rule 10 (requirement -> REQ_TYPING .)
+    RPAREN          reduce using rule 10 (requirement -> REQ_TYPING .)
+
+
+state 34
+
+    (11) requirement -> REQ_DISJUNC_PREC .
+
+    REQ_STRIPS      reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_TYPING      reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_DISJUNC_PREC reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_EQUALITY    reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_EXIST_PREC  reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_UNIV_PREC   reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_QUANTIF_PREC reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_COND_EFF    reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_FLUENTS     reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_NUMERIC_FLUENTS reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    REQ_ADL         reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+    RPAREN          reduce using rule 11 (requirement -> REQ_DISJUNC_PREC .)
+
+
+state 35
+
+    (12) requirement -> REQ_EQUALITY .
+
+    REQ_STRIPS      reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_TYPING      reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_DISJUNC_PREC reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_EQUALITY    reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_EXIST_PREC  reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_UNIV_PREC   reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_QUANTIF_PREC reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_COND_EFF    reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_FLUENTS     reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_NUMERIC_FLUENTS reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    REQ_ADL         reduce using rule 12 (requirement -> REQ_EQUALITY .)
+    RPAREN          reduce using rule 12 (requirement -> REQ_EQUALITY .)
+
+
+state 36
+
+    (13) requirement -> REQ_EXIST_PREC .
+
+    REQ_STRIPS      reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_TYPING      reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_DISJUNC_PREC reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_EQUALITY    reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_EXIST_PREC  reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_UNIV_PREC   reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_QUANTIF_PREC reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_COND_EFF    reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_FLUENTS     reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_NUMERIC_FLUENTS reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    REQ_ADL         reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+    RPAREN          reduce using rule 13 (requirement -> REQ_EXIST_PREC .)
+
+
+state 37
+
+    (14) requirement -> REQ_UNIV_PREC .
+
+    REQ_STRIPS      reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_TYPING      reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_DISJUNC_PREC reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_EQUALITY    reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_EXIST_PREC  reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_UNIV_PREC   reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_QUANTIF_PREC reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_COND_EFF    reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_FLUENTS     reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_NUMERIC_FLUENTS reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    REQ_ADL         reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+    RPAREN          reduce using rule 14 (requirement -> REQ_UNIV_PREC .)
+
+
+state 38
+
+    (15) requirement -> REQ_QUANTIF_PREC .
+
+    REQ_STRIPS      reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_TYPING      reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_DISJUNC_PREC reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_EQUALITY    reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_EXIST_PREC  reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_UNIV_PREC   reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_QUANTIF_PREC reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_COND_EFF    reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_FLUENTS     reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_NUMERIC_FLUENTS reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    REQ_ADL         reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+    RPAREN          reduce using rule 15 (requirement -> REQ_QUANTIF_PREC .)
+
+
+state 39
+
+    (16) requirement -> REQ_COND_EFF .
+
+    REQ_STRIPS      reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_TYPING      reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_DISJUNC_PREC reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_EQUALITY    reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_EXIST_PREC  reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_UNIV_PREC   reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_QUANTIF_PREC reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_COND_EFF    reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_FLUENTS     reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_NUMERIC_FLUENTS reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    REQ_ADL         reduce using rule 16 (requirement -> REQ_COND_EFF .)
+    RPAREN          reduce using rule 16 (requirement -> REQ_COND_EFF .)
+
+
+state 40
+
+    (17) requirement -> REQ_FLUENTS .
+
+    REQ_STRIPS      reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_TYPING      reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_DISJUNC_PREC reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_EQUALITY    reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_EXIST_PREC  reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_UNIV_PREC   reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_QUANTIF_PREC reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_COND_EFF    reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_FLUENTS     reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_NUMERIC_FLUENTS reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    REQ_ADL         reduce using rule 17 (requirement -> REQ_FLUENTS .)
+    RPAREN          reduce using rule 17 (requirement -> REQ_FLUENTS .)
+
+
+state 41
+
+    (18) requirement -> REQ_NUMERIC_FLUENTS .
+
+    REQ_STRIPS      reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_TYPING      reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_DISJUNC_PREC reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_EQUALITY    reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_EXIST_PREC  reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_UNIV_PREC   reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_QUANTIF_PREC reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_COND_EFF    reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_FLUENTS     reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_NUMERIC_FLUENTS reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    REQ_ADL         reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+    RPAREN          reduce using rule 18 (requirement -> REQ_NUMERIC_FLUENTS .)
+
+
+state 42
+
+    (19) requirement -> REQ_ADL .
+
+    REQ_STRIPS      reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_TYPING      reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_DISJUNC_PREC reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_EQUALITY    reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_EXIST_PREC  reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_UNIV_PREC   reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_QUANTIF_PREC reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_COND_EFF    reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_FLUENTS     reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_NUMERIC_FLUENTS reduce using rule 19 (requirement -> REQ_ADL .)
+    REQ_ADL         reduce using rule 19 (requirement -> REQ_ADL .)
+    RPAREN          reduce using rule 19 (requirement -> REQ_ADL .)
+
+
+state 43
+
+    (63) problem -> problem_def pb_domain_def objects_def init_def . goal_def
+    (64) problem -> problem_def pb_domain_def objects_def init_def . goal_def metric_def
+    (72) goal_def -> . LPAREN GOAL precond_predicate_list RPAREN
+
+    LPAREN          shift and go to state 58
+
+    goal_def                       shift and go to state 57
+
+state 44
+
+    (71) init_def -> LPAREN . INIT mixed_predicate_list RPAREN
+
+    INIT            shift and go to state 59
+
+
+state 45
+
+    (67) objects_def -> LPAREN OBJECTS . object_list RPAREN
+    (68) object_list -> . NAME MINUS NAME
+    (69) object_list -> . NAME object_list
+    (70) object_list -> . NAME MINUS NAME object_list
+
+    NAME            shift and go to state 61
+
+    object_list                    shift and go to state 60
+
+state 46
+
+    (66) pb_domain_def -> LPAREN PB_DOMAIN NAME . RPAREN
+
+    RPAREN          shift and go to state 62
+
+
+state 47
+
+    (3) domain -> domain_def requirements_def types_def predicates_def action_def .
+
+    RPAREN          reduce using rule 3 (domain -> domain_def requirements_def types_def predicates_def action_def .)
+
+
+state 48
+
+    (4) domain -> domain_def requirements_def types_def predicates_def function_def . action_def
+    (56) action_def -> . action_list
+    (57) action_list -> . action
+    (58) action_list -> . action action_list
+    (59) action -> . LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN
+
+    LPAREN          shift and go to state 64
+
+    action_def                     shift and go to state 63
+    action_list                    shift and go to state 49
+    action                         shift and go to state 51
+
+state 49
+
+    (56) action_def -> action_list .
+
+    RPAREN          reduce using rule 56 (action_def -> action_list .)
+
+
+state 50
+
+    (21) function_def -> LPAREN . FUNCTIONS predicate_list RPAREN
+    (59) action -> LPAREN . ACTION NAME parameter_def precondition_def effect_def RPAREN
+
+    FUNCTIONS       shift and go to state 65
+    ACTION          shift and go to state 66
+
+
+state 51
+
+    (57) action_list -> action .
+    (58) action_list -> action . action_list
+    (57) action_list -> . action
+    (58) action_list -> . action action_list
+    (59) action -> . LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN
+
+    RPAREN          reduce using rule 57 (action_list -> action .)
+    LPAREN          shift and go to state 64
+
+    action                         shift and go to state 51
+    action_list                    shift and go to state 67
+
+state 52
+
+    (24) predicates_def -> LPAREN PREDICATES . predicate_list RPAREN
+    (25) predicate_list -> . predicate
+    (26) predicate_list -> . predicate predicate_list
+    (27) predicate -> . LPAREN NAME param_list RPAREN
+    (28) predicate -> . LPAREN NAME RPAREN
+    (29) predicate -> . LPAREN NOT predicate RPAREN
+
+    LPAREN          shift and go to state 68
+
+    predicate_list                 shift and go to state 69
+    predicate                      shift and go to state 70
+
+state 53
+
+    (20) types_def -> LPAREN TYPES type_list . RPAREN
+
+    RPAREN          shift and go to state 71
+
+
+state 54
+
+    (22) type_list -> NAME .
+    (23) type_list -> NAME . type_list
+    (22) type_list -> . NAME
+    (23) type_list -> . NAME type_list
+
+    RPAREN          reduce using rule 22 (type_list -> NAME .)
+    NAME            shift and go to state 54
+
+    type_list                      shift and go to state 72
+
+state 55
+
+    (6) requirements_def -> LPAREN REQS requirement_list RPAREN .
+
+    LPAREN          reduce using rule 6 (requirements_def -> LPAREN REQS requirement_list RPAREN .)
+
+
+state 56
+
+    (8) requirement_list -> requirement requirement_list .
+
+    RPAREN          reduce using rule 8 (requirement_list -> requirement requirement_list .)
+
+
+state 57
+
+    (63) problem -> problem_def pb_domain_def objects_def init_def goal_def .
+    (64) problem -> problem_def pb_domain_def objects_def init_def goal_def . metric_def
+    (73) metric_def -> . LPAREN METRIC metric RPAREN
+
+    RPAREN          reduce using rule 63 (problem -> problem_def pb_domain_def objects_def init_def goal_def .)
+    LPAREN          shift and go to state 74
+
+    metric_def                     shift and go to state 73
+
+state 58
+
+    (72) goal_def -> LPAREN . GOAL precond_predicate_list RPAREN
+
+    GOAL            shift and go to state 75
+
+
+state 59
+
+    (71) init_def -> LPAREN INIT . mixed_predicate_list RPAREN
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate_list           shift and go to state 77
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 60
+
+    (67) objects_def -> LPAREN OBJECTS object_list . RPAREN
+
+    RPAREN          shift and go to state 83
+
+
+state 61
+
+    (68) object_list -> NAME . MINUS NAME
+    (69) object_list -> NAME . object_list
+    (70) object_list -> NAME . MINUS NAME object_list
+    (68) object_list -> . NAME MINUS NAME
+    (69) object_list -> . NAME object_list
+    (70) object_list -> . NAME MINUS NAME object_list
+
+    MINUS           shift and go to state 84
+    NAME            shift and go to state 61
+
+    object_list                    shift and go to state 85
+
+state 62
+
+    (66) pb_domain_def -> LPAREN PB_DOMAIN NAME RPAREN .
+
+    LPAREN          reduce using rule 66 (pb_domain_def -> LPAREN PB_DOMAIN NAME RPAREN .)
+
+
+state 63
+
+    (4) domain -> domain_def requirements_def types_def predicates_def function_def action_def .
+
+    RPAREN          reduce using rule 4 (domain -> domain_def requirements_def types_def predicates_def function_def action_def .)
+
+
+state 64
+
+    (59) action -> LPAREN . ACTION NAME parameter_def precondition_def effect_def RPAREN
+
+    ACTION          shift and go to state 66
+
+
+state 65
+
+    (21) function_def -> LPAREN FUNCTIONS . predicate_list RPAREN
+    (25) predicate_list -> . predicate
+    (26) predicate_list -> . predicate predicate_list
+    (27) predicate -> . LPAREN NAME param_list RPAREN
+    (28) predicate -> . LPAREN NAME RPAREN
+    (29) predicate -> . LPAREN NOT predicate RPAREN
+
+    LPAREN          shift and go to state 68
+
+    predicate_list                 shift and go to state 86
+    predicate                      shift and go to state 70
+
+state 66
+
+    (59) action -> LPAREN ACTION . NAME parameter_def precondition_def effect_def RPAREN
+
+    NAME            shift and go to state 87
+
+
+state 67
+
+    (58) action_list -> action action_list .
+
+    RPAREN          reduce using rule 58 (action_list -> action action_list .)
+
+
+state 68
+
+    (27) predicate -> LPAREN . NAME param_list RPAREN
+    (28) predicate -> LPAREN . NAME RPAREN
+    (29) predicate -> LPAREN . NOT predicate RPAREN
+
+    NAME            shift and go to state 88
+    NOT             shift and go to state 89
+
+
+state 69
+
+    (24) predicates_def -> LPAREN PREDICATES predicate_list . RPAREN
+
+    RPAREN          shift and go to state 90
+
+
+state 70
+
+    (25) predicate_list -> predicate .
+    (26) predicate_list -> predicate . predicate_list
+    (25) predicate_list -> . predicate
+    (26) predicate_list -> . predicate predicate_list
+    (27) predicate -> . LPAREN NAME param_list RPAREN
+    (28) predicate -> . LPAREN NAME RPAREN
+    (29) predicate -> . LPAREN NOT predicate RPAREN
+
+    RPAREN          reduce using rule 25 (predicate_list -> predicate .)
+    LPAREN          shift and go to state 68
+
+    predicate                      shift and go to state 70
+    predicate_list                 shift and go to state 91
+
+state 71
+
+    (20) types_def -> LPAREN TYPES type_list RPAREN .
+
+    LPAREN          reduce using rule 20 (types_def -> LPAREN TYPES type_list RPAREN .)
+
+
+state 72
+
+    (23) type_list -> NAME type_list .
+
+    RPAREN          reduce using rule 23 (type_list -> NAME type_list .)
+
+
+state 73
+
+    (64) problem -> problem_def pb_domain_def objects_def init_def goal_def metric_def .
+
+    RPAREN          reduce using rule 64 (problem -> problem_def pb_domain_def objects_def init_def goal_def metric_def .)
+
+
+state 74
+
+    (73) metric_def -> LPAREN . METRIC metric RPAREN
+
+    METRIC          shift and go to state 92
+
+
+state 75
+
+    (72) goal_def -> LPAREN GOAL . precond_predicate_list RPAREN
+    (30) precond_predicate_list -> . mixed_predicate_list
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    precond_predicate_list         shift and go to state 93
+    mixed_predicate_list           shift and go to state 94
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 76
+
+    (38) simple_mixed_predicate -> LPAREN . NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> LPAREN . NAME RPAREN
+    (40) simple_mixed_predicate -> LPAREN . EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> LPAREN . NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> LPAREN . OR mixed_predicate_list RPAREN
+    (34) predicate_group -> LPAREN . AND mixed_predicate_list RPAREN
+    (35) predicate_group -> LPAREN . WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> LPAREN . FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> LPAREN . EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> LPAREN . NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> LPAREN . EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> LPAREN . LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> LPAREN . GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> LPAREN . INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> LPAREN . DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> LPAREN . ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    NAME            shift and go to state 95
+    EQUALS          shift and go to state 96
+    NOT             shift and go to state 97
+    OR              shift and go to state 98
+    AND             shift and go to state 99
+    WHEN            shift and go to state 100
+    FORALL          shift and go to state 101
+    EXISTS          shift and go to state 102
+    LESSER          shift and go to state 103
+    GREATER         shift and go to state 104
+    INCREASE        shift and go to state 105
+    DECREASE        shift and go to state 106
+    ASSIGN          shift and go to state 107
+
+
+state 77
+
+    (71) init_def -> LPAREN INIT mixed_predicate_list . RPAREN
+
+    RPAREN          shift and go to state 108
+
+
+state 78
+
+    (31) mixed_predicate_list -> mixed_predicate .
+    (32) mixed_predicate_list -> mixed_predicate . mixed_predicate_list
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    RPAREN          reduce using rule 31 (mixed_predicate_list -> mixed_predicate .)
+    ACT_EFF         reduce using rule 31 (mixed_predicate_list -> mixed_predicate .)
+    LPAREN          shift and go to state 76
+
+    mixed_predicate                shift and go to state 78
+    mixed_predicate_list           shift and go to state 109
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 79
+
+    (42) mixed_predicate -> simple_mixed_predicate .
+
+    LPAREN          reduce using rule 42 (mixed_predicate -> simple_mixed_predicate .)
+    RPAREN          reduce using rule 42 (mixed_predicate -> simple_mixed_predicate .)
+    ACT_EFF         reduce using rule 42 (mixed_predicate -> simple_mixed_predicate .)
+
+
+state 80
+
+    (43) mixed_predicate -> predicate_group .
+
+    LPAREN          reduce using rule 43 (mixed_predicate -> predicate_group .)
+    RPAREN          reduce using rule 43 (mixed_predicate -> predicate_group .)
+    ACT_EFF         reduce using rule 43 (mixed_predicate -> predicate_group .)
+
+
+state 81
+
+    (44) mixed_predicate -> quantify_group .
+
+    LPAREN          reduce using rule 44 (mixed_predicate -> quantify_group .)
+    RPAREN          reduce using rule 44 (mixed_predicate -> quantify_group .)
+    ACT_EFF         reduce using rule 44 (mixed_predicate -> quantify_group .)
+
+
+state 82
+
+    (45) mixed_predicate -> numeric_predicate .
+
+    LPAREN          reduce using rule 45 (mixed_predicate -> numeric_predicate .)
+    RPAREN          reduce using rule 45 (mixed_predicate -> numeric_predicate .)
+    ACT_EFF         reduce using rule 45 (mixed_predicate -> numeric_predicate .)
+
+
+state 83
+
+    (67) objects_def -> LPAREN OBJECTS object_list RPAREN .
+
+    LPAREN          reduce using rule 67 (objects_def -> LPAREN OBJECTS object_list RPAREN .)
+
+
+state 84
+
+    (68) object_list -> NAME MINUS . NAME
+    (70) object_list -> NAME MINUS . NAME object_list
+
+    NAME            shift and go to state 110
+
+
+state 85
+
+    (69) object_list -> NAME object_list .
+
+    RPAREN          reduce using rule 69 (object_list -> NAME object_list .)
+
+
+state 86
+
+    (21) function_def -> LPAREN FUNCTIONS predicate_list . RPAREN
+
+    RPAREN          shift and go to state 111
+
+
+state 87
+
+    (59) action -> LPAREN ACTION NAME . parameter_def precondition_def effect_def RPAREN
+    (60) parameter_def -> . ACT_PARAM LPAREN param_list RPAREN
+
+    ACT_PARAM       shift and go to state 113
+
+    parameter_def                  shift and go to state 112
+
+state 88
+
+    (27) predicate -> LPAREN NAME . param_list RPAREN
+    (28) predicate -> LPAREN NAME . RPAREN
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    RPAREN          shift and go to state 115
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 114
+
+state 89
+
+    (29) predicate -> LPAREN NOT . predicate RPAREN
+    (27) predicate -> . LPAREN NAME param_list RPAREN
+    (28) predicate -> . LPAREN NAME RPAREN
+    (29) predicate -> . LPAREN NOT predicate RPAREN
+
+    LPAREN          shift and go to state 68
+
+    predicate                      shift and go to state 117
+
+state 90
+
+    (24) predicates_def -> LPAREN PREDICATES predicate_list RPAREN .
+
+    LPAREN          reduce using rule 24 (predicates_def -> LPAREN PREDICATES predicate_list RPAREN .)
+
+
+state 91
+
+    (26) predicate_list -> predicate predicate_list .
+
+    RPAREN          reduce using rule 26 (predicate_list -> predicate predicate_list .)
+
+
+state 92
+
+    (73) metric_def -> LPAREN METRIC . metric RPAREN
+    (74) metric -> . MAXIMIZE precond_predicate_list
+
+    MAXIMIZE        shift and go to state 119
+
+    metric                         shift and go to state 118
+
+state 93
+
+    (72) goal_def -> LPAREN GOAL precond_predicate_list . RPAREN
+
+    RPAREN          shift and go to state 120
+
+
+state 94
+
+    (30) precond_predicate_list -> mixed_predicate_list .
+
+    RPAREN          reduce using rule 30 (precond_predicate_list -> mixed_predicate_list .)
+
+
+state 95
+
+    (38) simple_mixed_predicate -> LPAREN NAME . mixed_list RPAREN
+    (39) simple_mixed_predicate -> LPAREN NAME . RPAREN
+    (77) mixed_list -> . VARIABLE
+    (78) mixed_list -> . NAME
+    (79) mixed_list -> . VARIABLE mixed_list
+    (80) mixed_list -> . NAME mixed_list
+
+    RPAREN          shift and go to state 123
+    VARIABLE        shift and go to state 124
+    NAME            shift and go to state 121
+
+    mixed_list                     shift and go to state 122
+
+state 96
+
+    (40) simple_mixed_predicate -> LPAREN EQUALS . mixed_list RPAREN
+    (47) numeric_predicate -> LPAREN EQUALS . simple_mixed_predicate NUMBER RPAREN
+    (77) mixed_list -> . VARIABLE
+    (78) mixed_list -> . NAME
+    (79) mixed_list -> . VARIABLE mixed_list
+    (80) mixed_list -> . NAME mixed_list
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    VARIABLE        shift and go to state 124
+    NAME            shift and go to state 121
+    LPAREN          shift and go to state 125
+
+    mixed_list                     shift and go to state 126
+    simple_mixed_predicate         shift and go to state 127
+
+state 97
+
+    (41) simple_mixed_predicate -> LPAREN NOT . simple_mixed_predicate RPAREN
+    (46) numeric_predicate -> LPAREN NOT . numeric_predicate RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 128
+
+    simple_mixed_predicate         shift and go to state 129
+    numeric_predicate              shift and go to state 130
+
+state 98
+
+    (33) predicate_group -> LPAREN OR . mixed_predicate_list RPAREN
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate_list           shift and go to state 131
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 99
+
+    (34) predicate_group -> LPAREN AND . mixed_predicate_list RPAREN
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate_list           shift and go to state 132
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 100
+
+    (35) predicate_group -> LPAREN WHEN . mixed_predicate mixed_predicate RPAREN
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate                shift and go to state 133
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 101
+
+    (36) quantify_group -> LPAREN FORALL . LPAREN param_list RPAREN mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 134
+
+
+state 102
+
+    (37) quantify_group -> LPAREN EXISTS . LPAREN param_list RPAREN mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 135
+
+
+state 103
+
+    (48) numeric_predicate -> LPAREN LESSER . simple_mixed_predicate NUMBER RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 136
+
+state 104
+
+    (49) numeric_predicate -> LPAREN GREATER . simple_mixed_predicate NUMBER RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 137
+
+state 105
+
+    (50) numeric_predicate -> LPAREN INCREASE . simple_mixed_predicate NUMBER RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 138
+
+state 106
+
+    (51) numeric_predicate -> LPAREN DECREASE . simple_mixed_predicate NUMBER RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 139
+
+state 107
+
+    (52) numeric_predicate -> LPAREN ASSIGN . simple_mixed_predicate NUMBER RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 140
+
+state 108
+
+    (71) init_def -> LPAREN INIT mixed_predicate_list RPAREN .
+
+    LPAREN          reduce using rule 71 (init_def -> LPAREN INIT mixed_predicate_list RPAREN .)
+
+
+state 109
+
+    (32) mixed_predicate_list -> mixed_predicate mixed_predicate_list .
+
+    RPAREN          reduce using rule 32 (mixed_predicate_list -> mixed_predicate mixed_predicate_list .)
+    ACT_EFF         reduce using rule 32 (mixed_predicate_list -> mixed_predicate mixed_predicate_list .)
+
+
+state 110
+
+    (68) object_list -> NAME MINUS NAME .
+    (70) object_list -> NAME MINUS NAME . object_list
+    (68) object_list -> . NAME MINUS NAME
+    (69) object_list -> . NAME object_list
+    (70) object_list -> . NAME MINUS NAME object_list
+
+    RPAREN          reduce using rule 68 (object_list -> NAME MINUS NAME .)
+    NAME            shift and go to state 61
+
+    object_list                    shift and go to state 141
+
+state 111
+
+    (21) function_def -> LPAREN FUNCTIONS predicate_list RPAREN .
+
+    LPAREN          reduce using rule 21 (function_def -> LPAREN FUNCTIONS predicate_list RPAREN .)
+
+
+state 112
+
+    (59) action -> LPAREN ACTION NAME parameter_def . precondition_def effect_def RPAREN
+    (61) precondition_def -> . ACT_PRE mixed_predicate_list
+
+    ACT_PRE         shift and go to state 143
+
+    precondition_def               shift and go to state 142
+
+state 113
+
+    (60) parameter_def -> ACT_PARAM . LPAREN param_list RPAREN
+
+    LPAREN          shift and go to state 144
+
+
+state 114
+
+    (27) predicate -> LPAREN NAME param_list . RPAREN
+
+    RPAREN          shift and go to state 145
+
+
+state 115
+
+    (28) predicate -> LPAREN NAME RPAREN .
+
+    LPAREN          reduce using rule 28 (predicate -> LPAREN NAME RPAREN .)
+    RPAREN          reduce using rule 28 (predicate -> LPAREN NAME RPAREN .)
+
+
+state 116
+
+    (53) param_list -> VARIABLE . MINUS NAME
+    (54) param_list -> VARIABLE . param_list
+    (55) param_list -> VARIABLE . MINUS NAME param_list
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    MINUS           shift and go to state 146
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 147
+
+state 117
+
+    (29) predicate -> LPAREN NOT predicate . RPAREN
+
+    RPAREN          shift and go to state 148
+
+
+state 118
+
+    (73) metric_def -> LPAREN METRIC metric . RPAREN
+
+    RPAREN          shift and go to state 149
+
+
+state 119
+
+    (74) metric -> MAXIMIZE . precond_predicate_list
+    (30) precond_predicate_list -> . mixed_predicate_list
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    precond_predicate_list         shift and go to state 150
+    mixed_predicate_list           shift and go to state 94
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 120
+
+    (72) goal_def -> LPAREN GOAL precond_predicate_list RPAREN .
+
+    LPAREN          reduce using rule 72 (goal_def -> LPAREN GOAL precond_predicate_list RPAREN .)
+    RPAREN          reduce using rule 72 (goal_def -> LPAREN GOAL precond_predicate_list RPAREN .)
+
+
+state 121
+
+    (78) mixed_list -> NAME .
+    (80) mixed_list -> NAME . mixed_list
+    (77) mixed_list -> . VARIABLE
+    (78) mixed_list -> . NAME
+    (79) mixed_list -> . VARIABLE mixed_list
+    (80) mixed_list -> . NAME mixed_list
+
+    RPAREN          reduce using rule 78 (mixed_list -> NAME .)
+    VARIABLE        shift and go to state 124
+    NAME            shift and go to state 121
+
+    mixed_list                     shift and go to state 151
+
+state 122
+
+    (38) simple_mixed_predicate -> LPAREN NAME mixed_list . RPAREN
+
+    RPAREN          shift and go to state 152
+
+
+state 123
+
+    (39) simple_mixed_predicate -> LPAREN NAME RPAREN .
+
+    LPAREN          reduce using rule 39 (simple_mixed_predicate -> LPAREN NAME RPAREN .)
+    RPAREN          reduce using rule 39 (simple_mixed_predicate -> LPAREN NAME RPAREN .)
+    ACT_EFF         reduce using rule 39 (simple_mixed_predicate -> LPAREN NAME RPAREN .)
+    NUMBER          reduce using rule 39 (simple_mixed_predicate -> LPAREN NAME RPAREN .)
+
+
+state 124
+
+    (77) mixed_list -> VARIABLE .
+    (79) mixed_list -> VARIABLE . mixed_list
+    (77) mixed_list -> . VARIABLE
+    (78) mixed_list -> . NAME
+    (79) mixed_list -> . VARIABLE mixed_list
+    (80) mixed_list -> . NAME mixed_list
+
+    RPAREN          reduce using rule 77 (mixed_list -> VARIABLE .)
+    VARIABLE        shift and go to state 124
+    NAME            shift and go to state 121
+
+    mixed_list                     shift and go to state 153
+
+state 125
+
+    (38) simple_mixed_predicate -> LPAREN . NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> LPAREN . NAME RPAREN
+    (40) simple_mixed_predicate -> LPAREN . EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> LPAREN . NOT simple_mixed_predicate RPAREN
+
+    NAME            shift and go to state 95
+    EQUALS          shift and go to state 154
+    NOT             shift and go to state 155
+
+
+state 126
+
+    (40) simple_mixed_predicate -> LPAREN EQUALS mixed_list . RPAREN
+
+    RPAREN          shift and go to state 156
+
+
+state 127
+
+    (47) numeric_predicate -> LPAREN EQUALS simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 157
+
+
+state 128
+
+    (38) simple_mixed_predicate -> LPAREN . NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> LPAREN . NAME RPAREN
+    (40) simple_mixed_predicate -> LPAREN . EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> LPAREN . NOT simple_mixed_predicate RPAREN
+    (46) numeric_predicate -> LPAREN . NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> LPAREN . EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> LPAREN . LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> LPAREN . GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> LPAREN . INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> LPAREN . DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> LPAREN . ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    NAME            shift and go to state 95
+    EQUALS          shift and go to state 96
+    NOT             shift and go to state 97
+    LESSER          shift and go to state 103
+    GREATER         shift and go to state 104
+    INCREASE        shift and go to state 105
+    DECREASE        shift and go to state 106
+    ASSIGN          shift and go to state 107
+
+
+state 129
+
+    (41) simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate . RPAREN
+
+    RPAREN          shift and go to state 158
+
+
+state 130
+
+    (46) numeric_predicate -> LPAREN NOT numeric_predicate . RPAREN
+
+    RPAREN          shift and go to state 159
+
+
+state 131
+
+    (33) predicate_group -> LPAREN OR mixed_predicate_list . RPAREN
+
+    RPAREN          shift and go to state 160
+
+
+state 132
+
+    (34) predicate_group -> LPAREN AND mixed_predicate_list . RPAREN
+
+    RPAREN          shift and go to state 161
+
+
+state 133
+
+    (35) predicate_group -> LPAREN WHEN mixed_predicate . mixed_predicate RPAREN
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate                shift and go to state 162
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 134
+
+    (36) quantify_group -> LPAREN FORALL LPAREN . param_list RPAREN mixed_predicate RPAREN
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 163
+
+state 135
+
+    (37) quantify_group -> LPAREN EXISTS LPAREN . param_list RPAREN mixed_predicate RPAREN
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 164
+
+state 136
+
+    (48) numeric_predicate -> LPAREN LESSER simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 165
+
+
+state 137
+
+    (49) numeric_predicate -> LPAREN GREATER simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 166
+
+
+state 138
+
+    (50) numeric_predicate -> LPAREN INCREASE simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 167
+
+
+state 139
+
+    (51) numeric_predicate -> LPAREN DECREASE simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 168
+
+
+state 140
+
+    (52) numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate . NUMBER RPAREN
+
+    NUMBER          shift and go to state 169
+
+
+state 141
+
+    (70) object_list -> NAME MINUS NAME object_list .
+
+    RPAREN          reduce using rule 70 (object_list -> NAME MINUS NAME object_list .)
+
+
+state 142
+
+    (59) action -> LPAREN ACTION NAME parameter_def precondition_def . effect_def RPAREN
+    (62) effect_def -> . ACT_EFF mixed_predicate_list
+
+    ACT_EFF         shift and go to state 171
+
+    effect_def                     shift and go to state 170
+
+state 143
+
+    (61) precondition_def -> ACT_PRE . mixed_predicate_list
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate_list           shift and go to state 172
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 144
+
+    (60) parameter_def -> ACT_PARAM LPAREN . param_list RPAREN
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 173
+
+state 145
+
+    (27) predicate -> LPAREN NAME param_list RPAREN .
+
+    LPAREN          reduce using rule 27 (predicate -> LPAREN NAME param_list RPAREN .)
+    RPAREN          reduce using rule 27 (predicate -> LPAREN NAME param_list RPAREN .)
+
+
+state 146
+
+    (53) param_list -> VARIABLE MINUS . NAME
+    (55) param_list -> VARIABLE MINUS . NAME param_list
+
+    NAME            shift and go to state 174
+
+
+state 147
+
+    (54) param_list -> VARIABLE param_list .
+
+    RPAREN          reduce using rule 54 (param_list -> VARIABLE param_list .)
+
+
+state 148
+
+    (29) predicate -> LPAREN NOT predicate RPAREN .
+
+    LPAREN          reduce using rule 29 (predicate -> LPAREN NOT predicate RPAREN .)
+    RPAREN          reduce using rule 29 (predicate -> LPAREN NOT predicate RPAREN .)
+
+
+state 149
+
+    (73) metric_def -> LPAREN METRIC metric RPAREN .
+
+    RPAREN          reduce using rule 73 (metric_def -> LPAREN METRIC metric RPAREN .)
+
+
+state 150
+
+    (74) metric -> MAXIMIZE precond_predicate_list .
+
+    RPAREN          reduce using rule 74 (metric -> MAXIMIZE precond_predicate_list .)
+
+
+state 151
+
+    (80) mixed_list -> NAME mixed_list .
+
+    RPAREN          reduce using rule 80 (mixed_list -> NAME mixed_list .)
+
+
+state 152
+
+    (38) simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN .
+
+    LPAREN          reduce using rule 38 (simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN .)
+    RPAREN          reduce using rule 38 (simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN .)
+    ACT_EFF         reduce using rule 38 (simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN .)
+    NUMBER          reduce using rule 38 (simple_mixed_predicate -> LPAREN NAME mixed_list RPAREN .)
+
+
+state 153
+
+    (79) mixed_list -> VARIABLE mixed_list .
+
+    RPAREN          reduce using rule 79 (mixed_list -> VARIABLE mixed_list .)
+
+
+state 154
+
+    (40) simple_mixed_predicate -> LPAREN EQUALS . mixed_list RPAREN
+    (77) mixed_list -> . VARIABLE
+    (78) mixed_list -> . NAME
+    (79) mixed_list -> . VARIABLE mixed_list
+    (80) mixed_list -> . NAME mixed_list
+
+    VARIABLE        shift and go to state 124
+    NAME            shift and go to state 121
+
+    mixed_list                     shift and go to state 126
+
+state 155
+
+    (41) simple_mixed_predicate -> LPAREN NOT . simple_mixed_predicate RPAREN
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+
+    LPAREN          shift and go to state 125
+
+    simple_mixed_predicate         shift and go to state 129
+
+state 156
+
+    (40) simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN .
+
+    LPAREN          reduce using rule 40 (simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN .)
+    RPAREN          reduce using rule 40 (simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN .)
+    ACT_EFF         reduce using rule 40 (simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN .)
+    NUMBER          reduce using rule 40 (simple_mixed_predicate -> LPAREN EQUALS mixed_list RPAREN .)
+
+
+state 157
+
+    (47) numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 175
+
+
+state 158
+
+    (41) simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN .
+
+    LPAREN          reduce using rule 41 (simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN .)
+    RPAREN          reduce using rule 41 (simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN .)
+    ACT_EFF         reduce using rule 41 (simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN .)
+    NUMBER          reduce using rule 41 (simple_mixed_predicate -> LPAREN NOT simple_mixed_predicate RPAREN .)
+
+
+state 159
+
+    (46) numeric_predicate -> LPAREN NOT numeric_predicate RPAREN .
+
+    LPAREN          reduce using rule 46 (numeric_predicate -> LPAREN NOT numeric_predicate RPAREN .)
+    RPAREN          reduce using rule 46 (numeric_predicate -> LPAREN NOT numeric_predicate RPAREN .)
+    ACT_EFF         reduce using rule 46 (numeric_predicate -> LPAREN NOT numeric_predicate RPAREN .)
+
+
+state 160
+
+    (33) predicate_group -> LPAREN OR mixed_predicate_list RPAREN .
+
+    LPAREN          reduce using rule 33 (predicate_group -> LPAREN OR mixed_predicate_list RPAREN .)
+    RPAREN          reduce using rule 33 (predicate_group -> LPAREN OR mixed_predicate_list RPAREN .)
+    ACT_EFF         reduce using rule 33 (predicate_group -> LPAREN OR mixed_predicate_list RPAREN .)
+
+
+state 161
+
+    (34) predicate_group -> LPAREN AND mixed_predicate_list RPAREN .
+
+    LPAREN          reduce using rule 34 (predicate_group -> LPAREN AND mixed_predicate_list RPAREN .)
+    RPAREN          reduce using rule 34 (predicate_group -> LPAREN AND mixed_predicate_list RPAREN .)
+    ACT_EFF         reduce using rule 34 (predicate_group -> LPAREN AND mixed_predicate_list RPAREN .)
+
+
+state 162
+
+    (35) predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate . RPAREN
+
+    RPAREN          shift and go to state 176
+
+
+state 163
+
+    (36) quantify_group -> LPAREN FORALL LPAREN param_list . RPAREN mixed_predicate RPAREN
+
+    RPAREN          shift and go to state 177
+
+
+state 164
+
+    (37) quantify_group -> LPAREN EXISTS LPAREN param_list . RPAREN mixed_predicate RPAREN
+
+    RPAREN          shift and go to state 178
+
+
+state 165
+
+    (48) numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 179
+
+
+state 166
+
+    (49) numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 180
+
+
+state 167
+
+    (50) numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 181
+
+
+state 168
+
+    (51) numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 182
+
+
+state 169
+
+    (52) numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER . RPAREN
+
+    RPAREN          shift and go to state 183
+
+
+state 170
+
+    (59) action -> LPAREN ACTION NAME parameter_def precondition_def effect_def . RPAREN
+
+    RPAREN          shift and go to state 184
+
+
+state 171
+
+    (62) effect_def -> ACT_EFF . mixed_predicate_list
+    (31) mixed_predicate_list -> . mixed_predicate
+    (32) mixed_predicate_list -> . mixed_predicate mixed_predicate_list
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate_list           shift and go to state 185
+    mixed_predicate                shift and go to state 78
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 172
+
+    (61) precondition_def -> ACT_PRE mixed_predicate_list .
+
+    ACT_EFF         reduce using rule 61 (precondition_def -> ACT_PRE mixed_predicate_list .)
+
+
+state 173
+
+    (60) parameter_def -> ACT_PARAM LPAREN param_list . RPAREN
+
+    RPAREN          shift and go to state 186
+
+
+state 174
+
+    (53) param_list -> VARIABLE MINUS NAME .
+    (55) param_list -> VARIABLE MINUS NAME . param_list
+    (53) param_list -> . VARIABLE MINUS NAME
+    (54) param_list -> . VARIABLE param_list
+    (55) param_list -> . VARIABLE MINUS NAME param_list
+
+    RPAREN          reduce using rule 53 (param_list -> VARIABLE MINUS NAME .)
+    VARIABLE        shift and go to state 116
+
+    param_list                     shift and go to state 187
+
+state 175
+
+    (47) numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 47 (numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 47 (numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 47 (numeric_predicate -> LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 176
+
+    (35) predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate RPAREN .
+
+    LPAREN          reduce using rule 35 (predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate RPAREN .)
+    RPAREN          reduce using rule 35 (predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate RPAREN .)
+    ACT_EFF         reduce using rule 35 (predicate_group -> LPAREN WHEN mixed_predicate mixed_predicate RPAREN .)
+
+
+state 177
+
+    (36) quantify_group -> LPAREN FORALL LPAREN param_list RPAREN . mixed_predicate RPAREN
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate                shift and go to state 188
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 178
+
+    (37) quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN . mixed_predicate RPAREN
+    (42) mixed_predicate -> . simple_mixed_predicate
+    (43) mixed_predicate -> . predicate_group
+    (44) mixed_predicate -> . quantify_group
+    (45) mixed_predicate -> . numeric_predicate
+    (38) simple_mixed_predicate -> . LPAREN NAME mixed_list RPAREN
+    (39) simple_mixed_predicate -> . LPAREN NAME RPAREN
+    (40) simple_mixed_predicate -> . LPAREN EQUALS mixed_list RPAREN
+    (41) simple_mixed_predicate -> . LPAREN NOT simple_mixed_predicate RPAREN
+    (33) predicate_group -> . LPAREN OR mixed_predicate_list RPAREN
+    (34) predicate_group -> . LPAREN AND mixed_predicate_list RPAREN
+    (35) predicate_group -> . LPAREN WHEN mixed_predicate mixed_predicate RPAREN
+    (36) quantify_group -> . LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN
+    (37) quantify_group -> . LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN
+    (46) numeric_predicate -> . LPAREN NOT numeric_predicate RPAREN
+    (47) numeric_predicate -> . LPAREN EQUALS simple_mixed_predicate NUMBER RPAREN
+    (48) numeric_predicate -> . LPAREN LESSER simple_mixed_predicate NUMBER RPAREN
+    (49) numeric_predicate -> . LPAREN GREATER simple_mixed_predicate NUMBER RPAREN
+    (50) numeric_predicate -> . LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN
+    (51) numeric_predicate -> . LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN
+    (52) numeric_predicate -> . LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN
+
+    LPAREN          shift and go to state 76
+
+    mixed_predicate                shift and go to state 189
+    simple_mixed_predicate         shift and go to state 79
+    predicate_group                shift and go to state 80
+    quantify_group                 shift and go to state 81
+    numeric_predicate              shift and go to state 82
+
+state 179
+
+    (48) numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 48 (numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 48 (numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 48 (numeric_predicate -> LPAREN LESSER simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 180
+
+    (49) numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 49 (numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 49 (numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 49 (numeric_predicate -> LPAREN GREATER simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 181
+
+    (50) numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 50 (numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 50 (numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 50 (numeric_predicate -> LPAREN INCREASE simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 182
+
+    (51) numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 51 (numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 51 (numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 51 (numeric_predicate -> LPAREN DECREASE simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 183
+
+    (52) numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN .
+
+    LPAREN          reduce using rule 52 (numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN .)
+    RPAREN          reduce using rule 52 (numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN .)
+    ACT_EFF         reduce using rule 52 (numeric_predicate -> LPAREN ASSIGN simple_mixed_predicate NUMBER RPAREN .)
+
+
+state 184
+
+    (59) action -> LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN .
+
+    LPAREN          reduce using rule 59 (action -> LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN .)
+    RPAREN          reduce using rule 59 (action -> LPAREN ACTION NAME parameter_def precondition_def effect_def RPAREN .)
+
+
+state 185
+
+    (62) effect_def -> ACT_EFF mixed_predicate_list .
+
+    RPAREN          reduce using rule 62 (effect_def -> ACT_EFF mixed_predicate_list .)
+
+
+state 186
+
+    (60) parameter_def -> ACT_PARAM LPAREN param_list RPAREN .
+
+    ACT_PRE         reduce using rule 60 (parameter_def -> ACT_PARAM LPAREN param_list RPAREN .)
+
+
+state 187
+
+    (55) param_list -> VARIABLE MINUS NAME param_list .
+
+    RPAREN          reduce using rule 55 (param_list -> VARIABLE MINUS NAME param_list .)
+
+
+state 188
+
+    (36) quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate . RPAREN
+
+    RPAREN          shift and go to state 190
+
+
+state 189
+
+    (37) quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate . RPAREN
+
+    RPAREN          shift and go to state 191
+
+
+state 190
+
+    (36) quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN .
+
+    LPAREN          reduce using rule 36 (quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN .)
+    RPAREN          reduce using rule 36 (quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN .)
+    ACT_EFF         reduce using rule 36 (quantify_group -> LPAREN FORALL LPAREN param_list RPAREN mixed_predicate RPAREN .)
+
+
+state 191
+
+    (37) quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN .
+
+    LPAREN          reduce using rule 37 (quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN .)
+    RPAREN          reduce using rule 37 (quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN .)
+    ACT_EFF         reduce using rule 37 (quantify_group -> LPAREN EXISTS LPAREN param_list RPAREN mixed_predicate RPAREN .)
+
