@@ -1,6 +1,6 @@
 (define (problem pb3)
 (:domain blocksworld)
-(:objects a -block b - block c - block)
+(:objects a b c - block)
 (:init ( and (on-table a) (on-table b)
 (on-table c) (clear a)
 (clear b) (clear c)

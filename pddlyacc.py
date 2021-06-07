@@ -175,7 +175,7 @@ def p_simple_mixed_predicate(p):
                               """
 
     if len(p) == 4:
-        p[0] = Predicate(p[2],[],[])
+        p[0] = Predicate(p[2],[])
     else:
         if p[2] == 'not':
             pred = p[3]

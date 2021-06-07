@@ -63,5 +63,5 @@ class Domain:
             for el in t:
                 ground_action = copy.deepcopy(action)
                 typ, mapping = _transform_to_action_param(el, action)
-                ground_action.update_params(typ,mapping)
+                ground_action.update_params(typ,mapping, objects)
                 self.grounded_actions[action.name].append(ground_action)

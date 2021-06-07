@@ -1,3 +1,4 @@
+import copy
 from enum import Enum
 
 
@@ -11,18 +12,24 @@ class Predicate:
         #self.consts = consts
         self.negation = False
 
-    def update_params(self, param):
+    def update_params(self, param, _):
         for i in range(len(self.params)):
             p = self.params[i]
             if p in param:
                 self.params[i] = param[p]
-
 
     def add(self, var):
         self.vars.insert(0, var)
 
     def add_const(self, const):
         self.consts.insert(0, const)
+
+    def get_vars(self):
+        vars = []
+        for p in self.params:
+            if p[0] == '?':
+                vars.append(p)
+        return vars
 
 
 class GroupType(Enum):
@@ -41,13 +48,13 @@ class PredicateGroup:
         self.predicate = predicate
         pass
 
-    def update_params(self, params):
+    def update_params(self, params, p_obs):
         pred = self.predicate
         if type(pred) == list:
             for p in pred:
-                p.update_params(params)
+                p.update_params(params, p_obs)
         else:
-            self.predicate.update_params(params)
+            self.predicate.update_params(params, p_obs)
 
 
 class QuantifyGroup(PredicateGroup):
@@ -56,12 +63,40 @@ class QuantifyGroup(PredicateGroup):
         super().__init__(type, predicate)
         self.params = params
 
+    def update_params(self, params, p_obs):
+        super().update_params(params, p_obs)
+        type = []
+        for sp in self.params:
+
+            type = next((x for x in p_obs if x.type == sp.type),None)
+            if not type:
+                raise Exception('Object of type' + sp.type + ' not defined')
+
+        if self.type == GroupType.FORALL:
+            self.type = GroupType.AND
+        else:
+            self.type = GroupType.OR
+
+        vars = self.predicate.get_vars()
+
+        preds = []
+
+        for t in type.instances:
+            pred = copy.deepcopy(self.predicate)
+            p = {vars[0]: t}
+            pred.update_params(p,[])
+            preds.append(pred)
+        self.predicate = preds
 
 class ConditionGroup(PredicateGroup):
 
     def __init__(self, type, predicate, antecedent):
         super().__init__(type, predicate)
         self.antecedent = antecedent
+
+    def update_params(self, params, p_obs):
+        super().update_params(params, p_obs)
+        self.antecedent.update_params(params, p_obs)
 
 
 class NumericGroup(PredicateGroup):
@@ -71,4 +106,3 @@ class NumericGroup(PredicateGroup):
         self.operator = operator
         self.value = value
         self.negation = False
-
