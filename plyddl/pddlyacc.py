@@ -11,7 +11,7 @@ from pddl.problem.objects import ProblemObjects
 from pddl.problem.init import Init
 from pddl.problem.goal import Goal
 
-print(tokens)
+#print(tokens)
 
 
 def p_pddl(p):
