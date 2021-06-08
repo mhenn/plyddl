@@ -1,6 +1,3 @@
-from pddl.domain.types import Type
-
-
 class Action:
 
     def __init__(self, name, parameter, precondition, effects):
@@ -16,3 +13,4 @@ class Action:
         for e in self.effects:
             e.update_params(param_mapping, p_objects)
 
+        return [self.parameter, str(self.precondition)]

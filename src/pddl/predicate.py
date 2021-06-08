@@ -12,6 +12,13 @@ class Predicate:
         #self.consts = consts
         self.negation = False
 
+    def __str__(self):
+        negation = ''
+        if self.negation:
+            negation = 'not'
+
+        return f'{negation} {self.name} {" ".join(self.params)}'
+
     def update_params(self, param, _):
         for i in range(len(self.params)):
             p = self.params[i]
@@ -88,6 +95,7 @@ class QuantifyGroup(PredicateGroup):
             preds.append(pred)
         self.predicate = preds
 
+
 class ConditionGroup(PredicateGroup):
 
     def __init__(self, type, predicate, antecedent):
@@ -97,6 +105,7 @@ class ConditionGroup(PredicateGroup):
     def update_params(self, params, p_obs):
         super().update_params(params, p_obs)
         self.antecedent.update_params(params, p_obs)
+
 
 
 class NumericGroup(PredicateGroup):

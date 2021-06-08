@@ -1,4 +1,4 @@
-from pddlyacc import parser
+from src.pddlyacc import parser
 
 
 def read_file(name):

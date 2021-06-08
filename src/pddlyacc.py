@@ -1,15 +1,15 @@
 from ply import yacc
-from pddllex import tokens
-from pddl.domain.domain import Domain
-from pddl.domain.requirements import Requirements
-from pddl.domain.types import Type, Variables
-from pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, NumericGroup, GroupType
-from pddl.domain.action import *
+from src.pddllex import tokens
+from src.pddl.domain.domain import Domain
+from src.pddl.domain.requirements import Requirements
+from src.pddl.domain.types import Type, Variables
+from src.pddl.predicate import Predicate, PredicateGroup, ConditionGroup, QuantifyGroup, NumericGroup, GroupType
+from src.pddl.domain.action import *
 
-from pddl.problem.problem import Problem
-from pddl.problem.objects import ProblemObjects
-from pddl.problem.init import Init
-from pddl.problem.goal import Goal
+from src.pddl.problem.problem import Problem
+from src.pddl.problem.objects import ProblemObjects
+from src.pddl.problem.init import Init
+from src.pddl.problem.goal import Goal
 
 #print(tokens)
 
