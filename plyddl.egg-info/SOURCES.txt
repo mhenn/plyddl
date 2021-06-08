@@ -1,4 +1,6 @@
 LICENSE
+README.md
+pyproject.toml
 setup.py
 plyddl.egg-info/PKG-INFO
 plyddl.egg-info/SOURCES.txt
