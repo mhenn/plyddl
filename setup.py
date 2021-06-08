@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='plyddl',
       version='0.0.1',
@@ -11,5 +11,8 @@ setup(name='plyddl',
             'Tracker': 'https://github.com/mhenn/plyddl/issues',
       },
       description='A simple pddl parser supporting most basic pddl features and numeric fluents from pddl2.1',
+      packages=find_packages(),
+      python_requires='>=3.6',
+      py_modules='plyddl',
       install_requires=['ply']
       )
