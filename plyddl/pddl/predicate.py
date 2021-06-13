@@ -17,7 +17,7 @@ class Predicate:
         if self.negation:
             negation = 'not'
 
-        return f'{negation} {self.name} {" ".join(self.params)}'
+        return f'{negation}({self.name} {" ".join(self.params)})'
 
     def update_params(self, param, _):
         for i in range(len(self.params)):

@@ -1,21 +1,20 @@
-from src.parse import Plyddl
+from plyddl.parse import Plyddl
+from planning import *
 
 p = Plyddl()
 
-def read_file(name):
-    f = open('./res/' + name, 'r')
-    data = f.readlines()
-    f.close()
-    return ''.join(data)
-
-
 #data = read_file('test.pddl')
-domain = 'pacman/domain.pddl'
-pb = 'pacman/pb0.pddl'
+#domain = 'pacman/domain.pddl'
+#pb = 'pacman/pb0.pddl'
 
-#domain = '/blocksworld/domain.pddl'
-#pb = '/blocksworld/pb.pddl'
+domain = '/blocksworld/domain.pddl'
+pb = '/blocksworld/pb.pddl'
 
-p.parse(domain,pb)
+p.parse(domain, pb)
 p.ground()
+a = get_actions_simple(p.domain.grounded_actions)
+g = goal_init(p.problem)
+pat = progression_planning(g[1], set(g[0]), a)
+print([p.name for p in pat])
+
 print('asd')

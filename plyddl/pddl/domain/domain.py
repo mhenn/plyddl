@@ -1,6 +1,6 @@
 import copy
 import itertools
-from src.pddl.domain.types import Type
+from plyddl.pddl.domain.types import Type
 
 
 def _transform_to_action_param(obj, action):
