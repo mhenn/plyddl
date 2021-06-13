@@ -2,7 +2,7 @@ from plyddl.pddlyacc import parser
 
 
 def read_file(name):
-    f = open('./res/' + name, 'r')
+    f = open( name, 'r')
     data = f.readlines()
     f.close()
     return ''.join(data)
