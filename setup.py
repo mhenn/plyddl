@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='plyddl',
-      version='0.0.1',
+      version='0.0.2',
       author='mike henning',
       author_email='mikeianhenni93@gmail.com',
       url='https://github.com/mhenn/plyddl/',
@@ -13,5 +13,6 @@ setup(name='plyddl',
       description='A simple pddl parser supporting most basic pddl features and numeric fluents from pddl2.1',
       packages=find_packages(),
       python_requires='>=3.6',
+      license_files=['LIECENSE', 'PLY_LICENSE'],
       install_requires=['ply']
       )
