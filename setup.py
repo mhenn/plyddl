@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='plyddl',
-      version='0.0.2',
+      version='0.0.2.1',
       author='mike henning',
       author_email='mikeianhenni93@gmail.com',
       url='https://github.com/mhenn/plyddl/',
