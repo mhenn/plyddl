@@ -24,7 +24,7 @@
         :parameters (?p1 ?p2 - pos )
         :precondition
             ( and
-                (not (= ?p1 ?p2))
+                ;(not (= ?p1 ?p2))
                 (adj ?p1 ?p2)
                 (pac-at ?p1)
                 (forall (?g - ghost)
@@ -64,7 +64,7 @@
         :parameters (?p1 ?p2 - pos ?g - ghost)
         :precondition
             (and
-                (not (= ?p1 ?p2))
+                ;(not (= ?p1 ?p2))
                 (adj ?p1 ?p2)
                 (pac-at ?p1)
                 (at ?p2 ?g)

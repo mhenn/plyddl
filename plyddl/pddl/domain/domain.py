@@ -49,6 +49,7 @@ class Domain:
         self.actions = actions
         self.types = types
         self.grounded_actions = {}
+        self.grounded_dict = {}
 
     def ground_actions(self, objects):
 
@@ -64,3 +65,24 @@ class Domain:
                 typ, mapping = _transform_to_action_param(el, action)
                 ground_action.update_params(typ,mapping, objects)
                 self.grounded_actions[action.name].append(ground_action)
+
+    def get_ground_actions(self, param_list, objects):
+        actions = {'move':[], 'eat-ghost':[]}
+        for p in param_list:
+            if len(p) == 2:
+                action = self.actions[0]
+                append = actions['move'].append
+            else:
+                action = self.actions[1]
+                append = actions['eat-ghost'].append
+
+            if str(p) in self.grounded_dict:
+                append(self.grounded_dict[str(p)])
+            else:
+                ground_action = copy.deepcopy(action)
+                typ, mapping = _transform_to_action_param(p, action)
+                ground_action.update_params(typ, mapping, objects)
+                #self.grounded_actions[action.name].append(ground_action)
+                self.grounded_dict[str(p)] = ground_action
+                append(ground_action)
+        return actions

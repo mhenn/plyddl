@@ -1,0 +1,16 @@
+#const n = 18.
+#const m = 11.
+
+{p(X,0..n)} :- X = 0..m.
+{p(0..m,Y)} :- Y = 0..n.
+:- #count{X,Y : p(X,Y)} == 1.
+
+adj(X1,Y1,X2,Y2) :- p(X1,Y1), p(X2,Y2).
+path(Xs,Y,Xd,Y):- (Xs +1) == Xd, adj(Xs,Y,Xd,Y).
+path(Xs,Y,Xd,Y):- (Xs -1) == Xd, adj(Xs,Y,Xd,Y).
+path(X,Ys,X,Yd):- (Ys +1) == Yd, adj(X,Ys,X,Yd).
+path(X,Ys,X,Yd):- (Ys -1) == Yd, adj(X,Ys,X,Yd).
+
+#show path/4.
+
+

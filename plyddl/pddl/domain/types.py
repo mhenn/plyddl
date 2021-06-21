@@ -15,4 +15,4 @@ class Variables:
         self.type = type
 
     def add(self, instance):
-        self.instances.append(instance)
+        self.instances.insert(0,instance)

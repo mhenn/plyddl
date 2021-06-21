@@ -30,3 +30,6 @@ class Plyddl:
         if not self.domain or not self.problem:
             raise Exception('Problem and domain have to be initialised first')
         self.domain.ground_actions(self.problem.objects)
+
+    def dynamic_ground(self, params):
+        return self.domain.get_ground_actions(params, self.problem.objects)
